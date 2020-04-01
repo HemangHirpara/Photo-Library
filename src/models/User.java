@@ -14,4 +14,10 @@ public class User {
         this.username = username;
         albums = new ArrayList<>();
     }
+
+    /**
+     * getter -> returns username
+     * @return String username
+     */
+    public String getUsername() {return this.username;}
 }

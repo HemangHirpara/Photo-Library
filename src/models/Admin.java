@@ -13,12 +13,14 @@ import java.util.List;
  */
 
 public class Admin {
+    String username;
     private List<User> users;
 
     /**
      * constructor loads the "users" array list by calling loadUsers()
      */
     public Admin(){
+        this.username = "admin";
         loadUsers();
     }
 

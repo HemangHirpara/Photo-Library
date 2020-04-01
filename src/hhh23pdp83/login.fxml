@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:controller="hhh23pdp83.LoginController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="159.0" layoutY="99.0" text="Welcome to Photos">
+         <font>
+            <Font name="Arial Bold" size="20.0" />
+         </font>
+      </Label>
+      <TextField id="username_tf" fx:id="username_tf" layoutX="177.0" layoutY="138.0" promptText="Enter Username" />
+      <Button id="loginBTN" fx:id="login_btn" onAction="#loginBtnAction" layoutX="224.0" layoutY="175.0" mnemonicParsing="false" text="Login" />
+   </children>
+</AnchorPane>
