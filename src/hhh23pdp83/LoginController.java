@@ -27,21 +27,11 @@ import java.util.*;
 public class LoginController implements Initializable {
 
     @FXML private TextField username_tf;
-    ObservableList<User> users = FXCollections.observableArrayList();
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        users.add(new User("Poojan"));
-        users.add(new User("hemang"));
     }
 
-    private ObservableList<User> loadUsers() {
-        // temp code
-        ObservableList<User> temp = FXCollections.observableArrayList();
-
-        return temp;
-    }
 
     /**
      * handles which scene to goto depending on the username
@@ -77,7 +67,4 @@ public class LoginController implements Initializable {
              */
         }
     }
-
-    public ObservableList<User> getUsers() { return this.users; }
-    public void setUsers(ObservableList<User> users) { this.users = users; }
 }

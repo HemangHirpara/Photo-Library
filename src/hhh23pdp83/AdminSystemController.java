@@ -29,8 +29,6 @@ public class AdminSystemController {
 
     public void initData(){
         LoginController a = new LoginController();
-        for(User b:  a.getUsers())
-            System.out.println(b.getUsername());
     }
 
     /**

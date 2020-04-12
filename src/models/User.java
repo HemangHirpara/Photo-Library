@@ -1,4 +1,5 @@
 package models;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,7 +7,7 @@ import java.util.List;
  * @author hhh23 and pdp83
  * holds all the albums owned by a user
  */
-public class User {
+public class User implements Serializable {
     String username;
     List<Album> albums;
 
