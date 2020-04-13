@@ -4,10 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.Album;
 import model.User;
 
@@ -16,22 +21,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.security.spec.ECField;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserSystemController extends Controller implements Initializable {
-    @FXML private TextField name_tf;
-    @FXML private TextField numPhotos_tf;
-    @FXML private TextField start_tf;
-    @FXML private TextField end_tf;
-    @FXML private Button create_btn;
-    @FXML private Button delete_btn;
-    @FXML private Button edit_btn;
-    @FXML private Button cancel_btn;
-    @FXML private Button open_btn;
+    @FXML private TextField name_tf, numPhotos_tf, start_tf, end_tf;
+    @FXML private Button create_btn,delete_btn, edit_btn, cancel_btn, open_btn;
     @FXML private TextArea status_ta;
     @FXML private ListView album_list;;
-
 
 
     private User curr_user;
@@ -84,7 +82,6 @@ public class UserSystemController extends Controller implements Initializable {
         }
 
     }
-
 
     public void edit_BtnAction(ActionEvent event) {
         status_ta.setText("editing Album");
@@ -156,6 +153,22 @@ public class UserSystemController extends Controller implements Initializable {
         System.exit(1);
     }
 
+    public void openBtnAction(ActionEvent event) {
+        Album toOpen = (Album) album_list.getSelectionModel().getSelectedItem();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
+            Parent parent = (Parent) loader.load();
+            PhotoSystemController controller = loader.getController();
+            Scene photoScene = new Scene(parent);
+            Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            controller.initData(this.userList, curr_user, toOpen);
+            stage.setScene(photoScene);
+            stage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void displayDetails(MouseEvent mouseEvent) {
         Album temp = (Album) album_list.getSelectionModel().getSelectedItem();
         displayDetails(temp);
@@ -206,10 +219,6 @@ public class UserSystemController extends Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void openBtnAction(ActionEvent event) {
-
     }
 }
 
