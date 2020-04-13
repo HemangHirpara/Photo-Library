@@ -28,8 +28,7 @@ public class UserSystemController extends Controller implements Initializable {
     @FXML private Button delete_btn;
     @FXML private Button edit_btn;
     @FXML private Button cancel_btn;
-    @FXML private Button logout_btn;
-    @FXML private Button quit_btn;
+    @FXML private Button open_btn;
     @FXML private TextArea status_ta;
     @FXML private ListView album_list;;
 
@@ -207,6 +206,10 @@ public class UserSystemController extends Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void openBtnAction(ActionEvent event) {
+
     }
 }
 

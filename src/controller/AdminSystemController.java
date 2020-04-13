@@ -18,10 +18,9 @@ public class AdminSystemController extends Controller{
     @FXML private Button createUser_btn;
     @FXML private Button deleteUser_btn;
     @FXML private Button cancel_btn;
-    @FXML private Button logout_btn;
-    @FXML private Button quit_btn;
     @FXML private TextArea status_ta;
     @FXML private ListView users_list;
+
 
     private List<User> userList;
     private ObservableList<User> observableUserList;
