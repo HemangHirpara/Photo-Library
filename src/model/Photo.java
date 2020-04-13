@@ -1,6 +1,7 @@
-package models;
+package model;
+
 import java.io.Serializable;
-import java.time.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 /**
@@ -8,6 +9,7 @@ import java.util.HashMap;
  * Stores: Date, Tags, and Location(maybe)
  */
 public class Photo implements Serializable {
+    private static final long serialVersionUID = 1L;
     private LocalDate dateTaken;
     private  HashMap<String, String> tags;
 }
