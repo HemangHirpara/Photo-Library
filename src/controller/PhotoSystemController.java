@@ -80,10 +80,6 @@ public class PhotoSystemController extends Controller implements Initializable{
         if(user.getAlbums().size() > 0)
             album_cb.getSelectionModel().selectFirst();
 
-        if(album.getPhotos().size() > 0){
-            images_list.getSelectionModel().selectFirst();
-        }
-
     }
 
     public void addBtnAction(ActionEvent actionEvent) {
@@ -229,6 +225,7 @@ public class PhotoSystemController extends Controller implements Initializable{
             images_list.getSelectionModel().getSelectedItem().setCaption(cap_tf.getText());
             images_list.refresh();
             edit_cap_btn.setText("Edit Caption");
+            status_ta.setText("Caption Updated");
             updateData();
             resetFields();
         }
