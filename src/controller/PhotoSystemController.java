@@ -64,14 +64,9 @@ public class PhotoSystemController extends Controller implements Initializable{
                 status_ta.setText("Invalid file type: " + extension);
                 return;
             }
-            //create a photo object from input, gave it a random caption for now
-            //get image
-            Image newImage = new Image(selectedFile.toURI().toString());
-            // get date
-            Calendar date = Calendar.getInstance();
-            date.setTimeInMillis(selectedFile.lastModified());
             //make photo
             Photo photoToAdd = new Photo(selectedFile.getName(),selectedFile);
+            //check for duplicates here
             images_list.getItems().add(photoToAdd);
             album.getPhotos().add(photoToAdd);
             updateData();
