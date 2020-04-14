@@ -45,7 +45,11 @@ public class PhotoSystemController extends Controller implements Initializable{
     @FXML private Button add_tag_btn;
     @FXML private Button del_tag_btn;
     @FXML private Button edit_cap_btn;
+    @FXML private Button move_btn, copy_btn;
+    @FXML private Label move_lbl;
     @FXML private ImageView img;
+    @FXML private ComboBox album_cb;
+
 
     private Stage stage;
     private User user;
@@ -70,6 +74,10 @@ public class PhotoSystemController extends Controller implements Initializable{
             }
         });
         images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
+
+        album_cb.setItems(FXCollections.observableList(user.getAlbums()));
+        if(user.getAlbums().size() > 0)
+            album_cb.getSelectionModel().selectFirst();
 
         if(album.getPhotos().size() > 0){
             images_list.getSelectionModel().selectFirst();
@@ -274,8 +282,64 @@ public class PhotoSystemController extends Controller implements Initializable{
     }
 
     public void moveBtnAction(ActionEvent actionEvent) {
+        images_list.setDisable(true);
+        if(move_btn.getText().equals("Move")) {
+            move_btn.setText("Confirm");
+            move_cpy_reset(true);
+        }else
+        {
+            Album toMoveto = (Album) album_cb.getSelectionModel().getSelectedItem();
+            Photo toMove = images_list.getSelectionModel().getSelectedItem();
+            if(toMoveto.equals(album)|| toMove == null)
+            {
+                status_ta.setText("cannot move ");
+                move_btn.setText("Move");
+                images_list.setDisable(false);
+                move_cpy_reset(false);
+                return;
+            }
+            move_cpy_reset(false);
+            toMoveto.addPhoto(toMove);
+            album.removePhoto(toMove);
+            images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
+            updateData();
+            move_btn.setText("Move");
+            images_list.setDisable(false);
+            status_ta.setText("moved photo");
+        }
+
+    }
+    public void copyBtnAction(ActionEvent actionEvent) {
+        images_list.setDisable(true);
+        if(copy_btn.getText().equals("Copy")) {
+            copy_btn.setText("Confirm");
+            move_cpy_reset(true);
+        }else
+        {
+            Album toCopyto = (Album) album_cb.getSelectionModel().getSelectedItem();
+            Photo toCopy = images_list.getSelectionModel().getSelectedItem();
+            if(toCopyto.equals(album) || toCopy == null)
+            {
+                status_ta.setText("cannot copy");
+                copy_btn.setText("Copy");
+                images_list.setDisable(false);
+                move_cpy_reset(false);
+                return;
+            }
+            toCopyto.addPhoto(toCopy);
+            images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
+            updateData();
+            move_cpy_reset(false);
+            copy_btn.setText("Copy");
+            images_list.setDisable(false);
+            status_ta.setText("copied photo");
+
+        }
     }
 
-    public void copyBtnAction(ActionEvent actionEvent) {
+    public void move_cpy_reset(boolean b){
+        move_lbl.setVisible(b);
+        album_cb.setVisible(b);
     }
+
 }

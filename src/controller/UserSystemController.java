@@ -10,11 +10,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Album;
-import model.Photo;
 import model.User;
 
 import java.io.FileNotFoundException;
@@ -55,6 +53,8 @@ public class UserSystemController extends Controller implements Initializable {
         this.userList = userList;
         this.curr_user = user;
         this.albums = curr_user.getAlbums();
+        for(Album a: albums)
+            a.updateDates();
         observableAlbumList = FXCollections.observableList(this.albums);
         this.album_list.setItems(observableAlbumList);
 

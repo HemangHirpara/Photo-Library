@@ -64,6 +64,16 @@ public class Album implements Serializable {
         return true;
     }
 
+    public void updateDates(){
+        for(Photo p : photos)
+        {
+            if(start == null || p.getDateTaken().compareTo(start) < 0)
+                setStart(p.getDateTaken());
+            if(end == null || p.getDateTaken().compareTo(end) > 0)
+                setEnd(p.getDateTaken());
+        }
+    }
+
 
     /**
      * getter -> returns name of album
