@@ -147,7 +147,7 @@ public class PhotoSystemController extends Controller implements Initializable{
             status_ta.setText("There are no photos");
         else {
             displayDetails(toOpen);
-            img.setImage(new Image(toOpen.getPhotoFile().toURI().toString(), 340, 340, true, true));
+            img.setImage(new Image(toOpen.getPhotoFile().toURI().toString(), 700, 350, true, true));
         }
     }
 
