@@ -324,12 +324,6 @@ public class PhotoSystemController extends Controller implements Initializable{
             ObservableList<Tag> tagList = FXCollections.observableList(a.getTags());
             tags_cb.setItems(tagList);
             tags_cb.getSelectionModel().selectFirst();
-            /*
-            if(tags_cb.getSelectionModel().getSelectedItem() != null){
-                tagtype_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getName());
-                tagval_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getValue());
-            }
-             */
         }
 
     }
@@ -488,6 +482,17 @@ public class PhotoSystemController extends Controller implements Initializable{
             stage.show();
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public void tagSelected(ActionEvent actionEvent) {
+        if(tags_cb.getSelectionModel().getSelectedItem() != null){
+            tagtype_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getName());
+            tagval_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getValue());
+        }
+        else{
+            tagtype_tf.setText("");
+            tagval_tf.setText("");
         }
     }
 }
