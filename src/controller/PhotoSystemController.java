@@ -48,6 +48,7 @@ public class PhotoSystemController extends Controller implements Initializable{
     @FXML private Label move_lbl;
     @FXML private ImageView img;
     @FXML private ComboBox album_cb;
+    @FXML private CheckBox isMult_cb;
     @FXML private Label photos_lbl;
 
     private Stage stage;
@@ -180,11 +181,12 @@ public class PhotoSystemController extends Controller implements Initializable{
             tagval_tf.setPromptText("Enter A Tag Value");
             tagtype_tf.setPromptText("Enter A Tag Type");
             add_tag_btn.setText("Confirm");
+            isMult_cb.setVisible(true);
         }
         else if(add_tag_btn.getText().equals("Confirm")) {
             //error check, do no allow duplicate tags
             //get image
-            Tag t = new Tag(tagtype_tf.getText(), tagval_tf.getText());
+            Tag t = new Tag(tagtype_tf.getText(), tagval_tf.getText(), isMult_cb.isSelected());
             boolean res = p.addTag(t);
             if(res){
                 status_ta.setText("tag added");
@@ -301,6 +303,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         tagval_tf.setText("");
         tagtype_tf.setText("");
         cancel_btn1.setVisible(false);
+        isMult_cb.setVisible(false);
     }
 
     /**
@@ -320,6 +323,13 @@ public class PhotoSystemController extends Controller implements Initializable{
             albname_tf.setText(album.getName());
             ObservableList<Tag> tagList = FXCollections.observableList(a.getTags());
             tags_cb.setItems(tagList);
+            tags_cb.getSelectionModel().selectFirst();
+            /*
+            if(tags_cb.getSelectionModel().getSelectedItem() != null){
+                tagtype_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getName());
+                tagval_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getValue());
+            }
+             */
         }
 
     }
