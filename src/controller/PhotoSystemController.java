@@ -45,11 +45,12 @@ public class PhotoSystemController extends Controller implements Initializable{
     @FXML private Button add_tag_btn;
     @FXML private Button del_tag_btn;
     @FXML private Button edit_cap_btn;
-    @FXML private Button move_btn, copy_btn;
+    @FXML private Button cancel_btn1;
+    @FXML private Button add_btn, remove_btn, move_btn, copy_btn, cancel_btn;
     @FXML private Label move_lbl;
     @FXML private ImageView img;
     @FXML private ComboBox album_cb;
-
+    @FXML private Label photos_lbl;
 
     private Stage stage;
     private User user;
@@ -67,6 +68,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         this.user = user;
         this.userList = userList;
         this.album = album;
+        photos_lbl.setText(album.getName() + " - Photos");
         images_list.setCellFactory(new Callback<ListView<Photo>, ListCell<Photo>>() {
             @Override
             public ListCell<Photo> call(ListView<Photo> photoListView) {
@@ -149,6 +151,7 @@ public class PhotoSystemController extends Controller implements Initializable{
             edit_cap_btn.setVisible(false);
             tagtype_tf.setEditable(true);
             tagval_tf.setEditable(true);
+            cancel_btn1.setVisible(true);
             tagval_tf.requestFocus();
             tagtype_tf.requestFocus();
             tagval_tf.setPromptText("Enter A Tag Value");
@@ -177,6 +180,7 @@ public class PhotoSystemController extends Controller implements Initializable{
             del_tag_btn.setVisible(false);
             add_tag_btn.setVisible(false);
             cap_tf.setEditable(true);
+            cancel_btn1.setVisible(true);
             cap_tf.requestFocus();
             cap_tf.setPromptText("Enter Caption for photo");
             edit_cap_btn.setText("Confirm");
@@ -229,7 +233,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         cap_tf.setPromptText("");
         tagval_tf.setText("");
         tagtype_tf.setText("");
-        cap_tf.setText(images_list.getSelectionModel().getSelectedItem().getCaption());
+        cancel_btn1.setVisible(false);
     }
 
     /**
@@ -285,6 +289,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         images_list.setDisable(true);
         if(move_btn.getText().equals("Move")) {
             move_btn.setText("Confirm");
+            copy_btn.setVisible(false);
             move_cpy_reset(true);
         }else
         {
@@ -295,9 +300,11 @@ public class PhotoSystemController extends Controller implements Initializable{
                 status_ta.setText("cannot move ");
                 move_btn.setText("Move");
                 images_list.setDisable(false);
+                copy_btn.setVisible(true);
                 move_cpy_reset(false);
                 return;
             }
+            copy_btn.setVisible(true);
             move_cpy_reset(false);
             toMoveto.addPhoto(toMove);
             album.removePhoto(toMove);
@@ -309,10 +316,12 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
 
     }
+
     public void copyBtnAction(ActionEvent actionEvent) {
         images_list.setDisable(true);
         if(copy_btn.getText().equals("Copy")) {
             copy_btn.setText("Confirm");
+            move_btn.setVisible(false);
             move_cpy_reset(true);
         }else
         {
@@ -323,12 +332,14 @@ public class PhotoSystemController extends Controller implements Initializable{
                 status_ta.setText("cannot copy");
                 copy_btn.setText("Copy");
                 images_list.setDisable(false);
+                move_btn.setVisible(true);
                 move_cpy_reset(false);
                 return;
             }
             toCopyto.addPhoto(toCopy);
             images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
             updateData();
+            move_btn.setVisible(true);
             move_cpy_reset(false);
             copy_btn.setText("Copy");
             images_list.setDisable(false);
@@ -340,6 +351,37 @@ public class PhotoSystemController extends Controller implements Initializable{
     public void move_cpy_reset(boolean b){
         move_lbl.setVisible(b);
         album_cb.setVisible(b);
+        add_btn.setVisible(!b);
+        remove_btn.setVisible(!b);
+        cancel_btn.setVisible(b);
     }
 
+    public void move_cpy_cancel(ActionEvent actionEvent) {
+        status_ta.setText("cancelled move/copy action");
+        copy_btn.setText("Copy");
+        move_btn.setText("Move");
+        copy_btn.setVisible(true);
+        move_btn.setVisible(true);
+        images_list.setDisable(false);
+        move_cpy_reset(false);
+    }
+
+    public void slideshow(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/slideshow.fxml"));
+            Parent parent = (Parent) loader.load();
+            SlideshowController controller = loader.getController();
+            Scene photoScene = new Scene(parent);
+            Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            if(album.getPhotos().size() == 0) {
+                status_ta.setText("Album has no images to show");
+                return;
+            }
+            controller.initData(this.userList, user, album);
+            stage.setScene(photoScene);
+            stage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
