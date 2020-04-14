@@ -31,13 +31,13 @@ public class PhotoThumbnail extends ListCell<Photo> {
         sPane.setPrefHeight(55.0);
         sPane.setPrefWidth(55.0);
 
-        AnchorPane.setLeftAnchor(caption, 55.0);
-        AnchorPane.setTopAnchor(caption, 25.0);
-        AnchorPane.setLeftAnchor(captionText, 55.0);
+        AnchorPane.setLeftAnchor(caption, 65.0);
+        AnchorPane.setTopAnchor(caption, 10.0);
+        AnchorPane.setLeftAnchor(captionText, 65.0);
         AnchorPane.setTopAnchor(captionText, 25.0);
 
         AnchorPane.setLeftAnchor(sPane, 0.0);
-        aPane.getChildren().addAll(sPane, captionText);
+        aPane.getChildren().addAll(sPane, caption,captionText);
         aPane.setPrefHeight(50.0);
         aPane.setPrefWidth(220);
         setGraphic(aPane);
@@ -47,11 +47,12 @@ public class PhotoThumbnail extends ListCell<Photo> {
     public void updateItem(Photo photo, boolean empty){
         super.updateItem(photo, empty);
         if(photo == null){
+            caption.setText("");
             captionText.setText("");
             imageView.setImage(null);
         }
         else{
-            caption.setText("Cap: ");
+            caption.setText("Caption: ");
             captionText.setText(photo.getCaption());
             imageView.setImage(new Image(photo.getPhotoFile().toURI().toString(),100,100,false,true));
         }
