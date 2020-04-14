@@ -23,9 +23,9 @@
       <Button fx:id="open_btn" layoutX="24.0" layoutY="289.0" mnemonicParsing="false" text="Open" />
       <Button fx:id="move_btn" layoutX="148.0" layoutY="60.0" mnemonicParsing="false" text="Move" />
       <Button fx:id="copy_btn" layoutX="216.0" layoutY="60.0" mnemonicParsing="false" text="Copy" />
-      <TextArea fx:id="status_ta" editable="false" layoutX="278.0" layoutY="695.0" prefHeight="41.0" prefWidth="192.0" promptText="status box" />
+      <TextField fx:id="status_ta" editable="false" layoutX="278.0" layoutY="695.0" prefHeight="41.0" prefWidth="192.0" promptText="status box" />
       <Button fx:id="add_btn" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#addBtnAction" text="Add" />
-      <Button fx:id="remove_btn" layoutX="75.0" layoutY="60.0" mnemonicParsing="false" text="Remove" />
+      <Button fx:id="remove_btn" layoutX="75.0" layoutY="60.0" mnemonicParsing="false" onAction="#removeBtnAction" text="Remove" />
       <Button fx:id="cancel_btn" layoutX="208.0" layoutY="101.0" mnemonicParsing="false" text="Cancel" />
       <Button fx:id="search_btn" layoutX="20.0" layoutY="246.0" mnemonicParsing="false" text="Search" />
       <TextField fx:id="dateFrom_tf" layoutX="17.0" layoutY="147.0" prefHeight="27.0" prefWidth="93.0" promptText="mm/dd/yy" />
@@ -59,6 +59,11 @@
       <Button fx:id="back_btn" layoutX="484.0" layoutY="703.0" mnemonicParsing="false" onAction="#backBtnAction" text="Back" />
       <Button fx:id="cancel_btn1" layoutX="574.0" layoutY="622.0" mnemonicParsing="false" onAction="#cancelBtnAction" text="Cancel" />
       <Label layoutX="411.0" layoutY="18.0" text="Photo Details">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="282.0" layoutY="673.0" text="Action Result">
          <font>
             <Font size="17.0" />
          </font>

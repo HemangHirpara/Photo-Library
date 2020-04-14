@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Album;
+import model.Photo;
 import model.User;
 
 import java.io.FileNotFoundException;
@@ -217,7 +218,6 @@ public class UserSystemController extends Controller implements Initializable {
     public void displayDetails(MouseEvent mouseEvent) {
         Album temp = (Album) album_list.getSelectionModel().getSelectedItem();
         displayDetails(temp);
-
     }
 
     /**
@@ -237,7 +237,6 @@ public class UserSystemController extends Controller implements Initializable {
             start_tf.setText(a.getStartString());
             end_tf.setText(a.getEndString());
         }
-
     }
 
     /**

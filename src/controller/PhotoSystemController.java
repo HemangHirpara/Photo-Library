@@ -35,7 +35,7 @@ import java.util.ResourceBundle;
  */
 public class PhotoSystemController extends Controller implements Initializable{
     @FXML private ListView<Photo> images_list;
-    @FXML private TextArea status_ta;
+    @FXML private TextField status_ta;
     @FXML private ChoiceBox<Tag> tags_cb;
     @FXML private TextField cap_tf;
     @FXML private TextField date_tf;
@@ -92,10 +92,33 @@ public class PhotoSystemController extends Controller implements Initializable{
             //make photo
             Photo photoToAdd = new Photo(selectedFile.getName(),selectedFile);
             //check for duplicates here
-            images_list.getItems().add(photoToAdd);
-            album.getPhotos().add(photoToAdd);
+            boolean res = album.addPhoto(photoToAdd);
+            if(res)
+            {
+                images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
+                updateData();
+            }
+            else{
+                status_ta.setText("Duplicate Photo Found");
+            }
+
+        }
+    }
+
+    public void removeBtnAction(ActionEvent event) {
+        images_list.setDisable(true);
+        Photo toDelete = images_list.getSelectionModel().getSelectedItem();
+        if(album.removePhoto(toDelete)){
+            status_ta.setText("success");
+            images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
             updateData();
         }
+        else
+        {
+            status_ta.setText("action failed");
+        }
+
+        images_list.setDisable(false);
     }
 
     public void addTagBtnAction(ActionEvent actionEvent) {
@@ -251,4 +274,5 @@ public class PhotoSystemController extends Controller implements Initializable{
             e.printStackTrace();
         }
     }
+
 }

@@ -30,6 +30,42 @@ public class Album implements Serializable {
     }
 
     /**
+     * Adds a new photo and updates dateRange
+     * @param photo to Add
+     */
+    public boolean addPhoto(Photo photo){
+        for(Photo p : photos){
+            if(p.equals(photo))
+                return false;
+        }
+        photos.add(photo);
+        if(start == null || photo.getDateTaken().compareTo(start) < 0)
+            setStart(photo.getDateTaken());
+        if(end == null || photo.getDateTaken().compareTo(end) > 0)
+            setEnd(photo.getDateTaken());
+        return true;
+    }
+
+
+    public boolean removePhoto(Photo photo){
+        if(!photos.contains(photo))
+            return false;
+        photos.remove(photo);
+
+        // recalc start and end
+        for(Photo p : photos)
+        {
+            if(start == null || p.getDateTaken().compareTo(start) < 0)
+                setStart(p.getDateTaken());
+            if(end == null || p.getDateTaken().compareTo(end) > 0)
+                setEnd(p.getDateTaken());
+        }
+
+        return true;
+    }
+
+
+    /**
      * getter -> returns name of album
      * @return String name
      */
@@ -60,13 +96,7 @@ public class Album implements Serializable {
     public String getStartString() {
         if(this.start == null || photos.size() < 0)
             return "-";
-        Date min = photos.get(0).getDateTaken();
-        for(Photo p : photos){
-            Date temp = p.getDateTaken();
-            if(temp.compareTo(min) < 0)
-                min = temp;
-        }
-        return new SimpleDateFormat("MM/dd/yy/").format(min);
+        return new SimpleDateFormat("MM/dd/yyyy").format(this.getStart());
     }
 
     /**
@@ -92,7 +122,7 @@ public class Album implements Serializable {
     public String getEndString() {
         if(this.end == null)
             return "-";
-        return new SimpleDateFormat("MM/dd/yy/").format(this.getEnd());
+        return new SimpleDateFormat("MM/dd/yyyy").format(this.getEnd());
     }
 
     /**
