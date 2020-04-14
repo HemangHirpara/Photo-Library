@@ -45,6 +45,7 @@ public class PhotoSystemController extends Controller implements Initializable{
     @FXML private Button add_tag_btn;
     @FXML private Button del_tag_btn;
     @FXML private Button edit_cap_btn;
+    @FXML private ImageView img;
 
     private Stage stage;
     private User user;
@@ -72,7 +73,7 @@ public class PhotoSystemController extends Controller implements Initializable{
 
         if(album.getPhotos().size() > 0){
             images_list.getSelectionModel().selectFirst();
-            displayDetails(images_list.getSelectionModel().getSelectedItem());
+            //displayDetails(images_list.getSelectionModel().getSelectedItem());
             //set tags dropdown list
             tags_cb.setItems(FXCollections.observableList(images_list.getSelectionModel().getSelectedItem().getTags()));
         }
@@ -119,6 +120,12 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
 
         images_list.setDisable(false);
+    }
+
+    public void openBtnAction(ActionEvent actionEvent) {
+        Photo toOpen = images_list.getSelectionModel().getSelectedItem();
+        displayDetails(toOpen);
+        img.setImage(new Image(toOpen.getPhotoFile().toURI().toString(),340,340,true,true));
     }
 
     public void addTagBtnAction(ActionEvent actionEvent) {
@@ -215,15 +222,6 @@ public class PhotoSystemController extends Controller implements Initializable{
         tagval_tf.setText("");
         tagtype_tf.setText("");
         cap_tf.setText(images_list.getSelectionModel().getSelectedItem().getCaption());
-    }
-
-    /**
-     * Display album details on mouse click
-     * @param mouseEvent
-     */
-    public void displayDetails(MouseEvent mouseEvent) {
-        Photo temp = (Photo) images_list.getSelectionModel().getSelectedItem();
-        displayDetails(temp);
     }
 
     /**
