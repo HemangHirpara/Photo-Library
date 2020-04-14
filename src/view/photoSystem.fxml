@@ -71,8 +71,8 @@
       <Button fx:id="search_btn" layoutX="533.0" layoutY="65.0" mnemonicParsing="false" text="Search by Date" />
       <Button fx:id="remove_btn" layoutX="76.0" layoutY="65.0" mnemonicParsing="false" onAction="#removeBtnAction" text="Delete" />
       <Button fx:id="add_btn" layoutX="14.0" layoutY="65.0" mnemonicParsing="false" onAction="#addBtnAction" text="Add" />
-      <Button fx:id="copy_btn" layoutX="142.0" layoutY="65.0" mnemonicParsing="false" text="Copy" />
-      <Button fx:id="move_btn" layoutX="200.0" layoutY="65.0" mnemonicParsing="false" text="Move" />
+      <Button fx:id="copy_btn" layoutX="142.0" layoutY="65.0" mnemonicParsing="false" onAction="#copyBtnAction" text="Copy" />
+      <Button fx:id="move_btn" layoutX="200.0" layoutY="65.0" mnemonicParsing="false" onAction="#moveBtnAction" text="Move" />
       <Button fx:id="cancel_btn" layoutX="13.0" layoutY="246.0" mnemonicParsing="false" text="Cancel" />
       <Button fx:id="create_alb_btn" layoutX="533.0" layoutY="115.0" mnemonicParsing="false" text="Create Album" />
       <Button fx:id="search_btn1" layoutX="642.0" layoutY="65.0" mnemonicParsing="false" text="Search by Tag(s)" />

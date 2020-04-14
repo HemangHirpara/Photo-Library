@@ -75,7 +75,7 @@ public class PhotoSystemController extends Controller implements Initializable{
             images_list.getSelectionModel().selectFirst();
             //displayDetails(images_list.getSelectionModel().getSelectedItem());
             //set tags dropdown list
-            tags_cb.setItems(FXCollections.observableList(images_list.getSelectionModel().getSelectedItem().getTags()));
+            //tags_cb.setItems(FXCollections.observableList(images_list.getSelectionModel().getSelectedItem().getTags()));
         }
 
     }
@@ -273,4 +273,9 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    public void moveBtnAction(ActionEvent actionEvent) {
+    }
+
+    public void copyBtnAction(ActionEvent actionEvent) {
+    }
 }
