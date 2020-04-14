@@ -29,7 +29,7 @@ public class UserSystemController extends Controller implements Initializable {
     @FXML private TextField name_tf, numPhotos_tf, start_tf, end_tf;
     @FXML private Button create_btn,delete_btn, edit_btn, cancel_btn, open_btn;
     @FXML private TextArea status_ta;
-    @FXML private ListView album_list;;
+    @FXML private ListView album_list;
 
 
     private User curr_user;
@@ -161,7 +161,7 @@ public class UserSystemController extends Controller implements Initializable {
             PhotoSystemController controller = loader.getController();
             Scene photoScene = new Scene(parent);
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            controller.initData(this.userList, curr_user, toOpen);
+            controller.initData(this.userList, curr_user, toOpen, stage);
             stage.setScene(photoScene);
             stage.show();
         }catch (Exception e){

@@ -1,9 +1,11 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.io.File;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,16 +14,33 @@ import java.util.List;
  */
 public class Photo implements Serializable {
     private static final long serialVersionUID = 1L;
-    private LocalDate dateTaken;
+    private Date dateTaken;
     private List<Tag> tags;
-    String caption;
-    File photoFile;
+    private String caption;
+    private File photoFile;
+    private Image photoImage;
 
-    public LocalDate getDateTaken() {
+    public Photo(File photoFile, String caption){
+        this.photoFile = photoFile;
+        this.photoImage = new Image(photoFile.getPath());
+        this.caption = caption.equals("") ? "N/A" : caption;
+        this.dateTaken = new Date(photoFile.lastModified());
+        this.tags = new ArrayList<Tag>();
+    }
+
+    public Image getPhotoImage() {
+        return photoImage;
+    }
+
+    public void setPhotoImage(Image photoImage) {
+        this.photoImage = photoImage;
+    }
+
+    public Date getDateTaken() {
         return dateTaken;
     }
 
-    public void setDateTaken(LocalDate dateTaken) {
+    public void setDateTaken(Date dateTaken) {
         this.dateTaken = dateTaken;
     }
 
@@ -49,7 +68,26 @@ public class Photo implements Serializable {
         this.photoFile = photoFile;
     }
 
-    public Photo(){
+    public void addTag(Tag tag){
+        if (tags == null) tags = new ArrayList<Tag>();
+        for (Tag t : tags){
+            if (t.equals(tag)){
+                System.out.println("Tag already exists for this photo");
+                return;
+            }
+        }
+        tags.add(tag);
+    }
 
+    public void deleteTag(int i){
+        if (tags == null) return;
+        tags.remove(i);
+    }
+
+    public boolean equals(Object o){
+        if (o == null || !(o instanceof Photo))
+            return false;
+        Photo op = (Photo) o;
+        return this.getPhotoFile().getPath().equals(op.getPhotoFile().getPath());
     }
 }

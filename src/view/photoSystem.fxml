@@ -11,15 +11,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.PhotoSystemController" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoSystemController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Photos">
          <font>
             <Font name="SF Mono Bold" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="add_btn" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" text="Add" />
+      <Button fx:id="add_btn" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" onAction="#addBtnAction" text="Add" />
       <Button fx:id="remove_btn" layoutX="63.0" layoutY="342.0" mnemonicParsing="false" text="Remove" />
       <Button fx:id="move_btn" layoutX="137.0" layoutY="342.0" mnemonicParsing="false" text="Move" />
       <Button fx:id="copy_btn" layoutX="194.0" layoutY="342.0" mnemonicParsing="false" text="Copy" />
