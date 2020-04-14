@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
 public class PhotoSystemController extends Controller implements Initializable{
     @FXML private ListView<Photo> images_list;
     @FXML private TextField status_ta;
-    @FXML private ChoiceBox<Tag> tags_cb;
+    @FXML private ComboBox<Tag> tags_cb;
     @FXML private TextField cap_tf;
     @FXML private TextField date_tf;
     @FXML private TextField tagtype_tf;
@@ -56,7 +56,6 @@ public class PhotoSystemController extends Controller implements Initializable{
     private User user;
     private Album album;
     private List<User> userList;
-    private Album photoAlbum;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,9 +82,6 @@ public class PhotoSystemController extends Controller implements Initializable{
 
         if(album.getPhotos().size() > 0){
             images_list.getSelectionModel().selectFirst();
-            //displayDetails(images_list.getSelectionModel().getSelectedItem());
-            //set tags dropdown list
-            //tags_cb.setItems(FXCollections.observableList(images_list.getSelectionModel().getSelectedItem().getTags()));
         }
 
     }
@@ -134,12 +130,22 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     public void openBtnAction(ActionEvent actionEvent) {
         Photo toOpen = images_list.getSelectionModel().getSelectedItem();
-        displayDetails(toOpen);
-        img.setImage(new Image(toOpen.getPhotoFile().toURI().toString(),340,340,true,true));
+        if(toOpen == null)
+            status_ta.setText("There are no photos");
+        else {
+            displayDetails(toOpen);
+            img.setImage(new Image(toOpen.getPhotoFile().toURI().toString(), 340, 340, true, true));
+        }
     }
 
     public void addTagBtnAction(ActionEvent actionEvent) {
         //on click, make all text fields disappear, bring focus to tag text fields
+        Photo p = images_list.getSelectionModel().getSelectedItem();
+        if(p == null){
+            status_ta.setText("no image selected");
+            resetFields();
+            return;
+        }
         if(add_tag_btn.getText().equals("Add Tag")) {
             images_list.setDisable(true);
             images_list.setEditable(false);
@@ -160,15 +166,49 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
         else if(add_tag_btn.getText().equals("Confirm")) {
             //error check, do no allow duplicate tags
+            //get image
             Tag t = new Tag(tagtype_tf.getText(), tagval_tf.getText());
-            images_list.getSelectionModel().getSelectedItem().addTag(t);
+            boolean res = p.addTag(t);
+            if(res){
+                status_ta.setText("tag added");
+                ObservableList<Tag> tagList = FXCollections.observableList(p.getTags());
+                tags_cb.setItems(tagList);
+                updateData();
+            }
+            else
+                status_ta.setText("tag already exists");
             add_tag_btn.setText("Add Tag");
-            updateData();
+
             resetFields();
         }
     }
 
+    public void deleteTagBtnAction(ActionEvent actionEvent) {
+        Photo p = images_list.getSelectionModel().getSelectedItem();
+        Tag t = tags_cb.getSelectionModel().getSelectedItem();
+        if(p == null || t == null){
+            status_ta.setText("no image/tag selected");
+            resetFields();
+            return;
+        }
+        boolean res = p.deleteTag(t);
+        if(res){
+            status_ta.setText("tag deleted");
+            ObservableList<Tag> tagList = FXCollections.observableList(p.getTags());
+            tags_cb.setItems(tagList);
+            updateData();
+        }
+        else
+            status_ta.setText("delete failed");
+
+
+    }
     public void editCaptionBtnAction(ActionEvent actionEvent) {
+        if(images_list.getSelectionModel().getSelectedItem() == null){
+            status_ta.setText("no image selected");
+            resetFields();
+            return;
+        }
         if(edit_cap_btn.getText().equals("Edit Caption")) {
             images_list.setDisable(true);
             images_list.setEditable(false);
@@ -192,9 +232,6 @@ public class PhotoSystemController extends Controller implements Initializable{
             updateData();
             resetFields();
         }
-    }
-
-    public void deleteTagBtnAction(ActionEvent actionEvent) {
     }
 
     public void cancelBtnAction(ActionEvent actionEvent) {
@@ -251,7 +288,8 @@ public class PhotoSystemController extends Controller implements Initializable{
             cap_tf.setText(a.getCaption());
             date_tf.setText(a.getDateString());
             albname_tf.setText(album.getName());
-            tags_cb.setItems(FXCollections.observableList(a.getTags()));
+            ObservableList<Tag> tagList = FXCollections.observableList(a.getTags());
+            tags_cb.setItems(tagList);
         }
 
     }

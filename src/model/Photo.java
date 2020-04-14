@@ -44,7 +44,7 @@ public class Photo implements Serializable {
     }
 
     public List<Tag> getTags() {
-        return tags;
+        return this.tags;
     }
 
     public void setTags(List<Tag> tags) {
@@ -67,20 +67,27 @@ public class Photo implements Serializable {
         this.photoFile = photoFile;
     }
 
-    public void addTag(Tag tag){
+    public boolean addTag(Tag tag){
         if (tags == null) tags = new ArrayList<Tag>();
         for (Tag t : tags){
             if (t.equals(tag)){
-                System.out.println("Tag already exists for this photo");
-                return;
+                return false;
             }
         }
         tags.add(tag);
+        return true;
     }
 
-    public void deleteTag(int i){
-        if (tags == null) return;
-        tags.remove(i);
+    public boolean deleteTag(Tag t){
+        if (tags == null) return false;
+        for(Tag tag  : tags)
+        {
+            if(t.equals(tag)) {
+                tags.remove(tag);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

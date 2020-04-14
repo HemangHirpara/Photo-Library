@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="move_cpy_lbl" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoSystemController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoSystemController">
    <children>
       <Label fx:id="photos_lbl" layoutX="14.0" layoutY="14.0" text="Photos">
          <font>
@@ -36,7 +36,7 @@
       <Button fx:id="quit_btn" layoutX="690.0" layoutY="703.0" mnemonicParsing="false" onAction="#quitBtnAction" text="Quit" />
       <AnchorPane fx:id="photoDetails_pane" layoutX="13.0" layoutY="340.0" prefHeight="308.0" prefWidth="734.0">
          <children>
-            <ChoiceBox fx:id="tags_cb" layoutX="90.0" layoutY="71.0" prefWidth="150.0" />
+            <ComboBox fx:id="tags_cb" layoutX="90.0" layoutY="71.0" prefWidth="150.0" />
             <Label layoutX="20.0" layoutY="75.0" prefHeight="17.0" prefWidth="47.0" text="Tag(s):" />
             <Label layoutX="20.0" layoutY="252.0" prefHeight="17.0" prefWidth="47.0" text="Caption:" />
             <TextField fx:id="cap_tf" editable="false" layoutX="90.0" layoutY="247.0" prefHeight="27.0" prefWidth="150.0" />

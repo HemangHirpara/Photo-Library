@@ -12,8 +12,8 @@ public class Tag implements Serializable {
     private String name, value;
 
     public Tag(String name, String val) {
-        this.name = name;
-        this.value = val;
+        this.name = name.toLowerCase();
+        this.value = val.toLowerCase();
     }
     public String getName() {
         return name;
