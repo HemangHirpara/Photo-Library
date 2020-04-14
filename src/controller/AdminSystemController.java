@@ -13,6 +13,11 @@ import java.io.ObjectOutputStream;
 
 import java.util.List;
 
+/**
+ * Extends Controller class to represent Admin Sub System
+ * @author Hemang Hirpara hhh23
+ * @author Poojan Patel pdp83
+ */
 public class AdminSystemController extends Controller{
     @FXML private TextField newUsername_tf;
     @FXML private Button createUser_btn;
@@ -25,7 +30,10 @@ public class AdminSystemController extends Controller{
     private List<User> userList;
     private ObservableList<User> observableUserList;
 
-
+    /**
+     * Initialize admin subsystem with user list
+     * @param userList
+     */
     public void initData(List<User> userList){
         this.userList = userList;
         observableUserList = FXCollections.observableList(this.userList);
@@ -34,6 +42,10 @@ public class AdminSystemController extends Controller{
 
     }
 
+    /**
+     * Create user button functionality
+     * @param actionEvent
+     */
     public void createBtnAction(ActionEvent actionEvent) {
         status_ta.setText("Creating user");
         if(createUser_btn.getText().equals("Create User")){
@@ -66,6 +78,10 @@ public class AdminSystemController extends Controller{
 
     }
 
+    /**
+     * Delete user button functionality
+     * @param actionEvent
+     */
     public void deleteBtnAction(ActionEvent actionEvent) {
         status_ta.setText("Deleting selected user");
         if(deleteUser_btn.getText().equals("Delete User")){
@@ -88,6 +104,9 @@ public class AdminSystemController extends Controller{
         }
     }
 
+    /**
+     * Update user button functionality
+     */
     private void updateData() {
         try {
             FileOutputStream fos = new FileOutputStream(getDataPath());
@@ -102,6 +121,9 @@ public class AdminSystemController extends Controller{
         }
     }
 
+    /**
+     * Reset text fields and buttons to initial values
+     */
     private void resetFields() {
         users_list.setDisable(false);
         createUser_btn.setVisible(true);
@@ -113,12 +135,19 @@ public class AdminSystemController extends Controller{
         newUsername_tf.setVisible(false);
     }
 
-
+    /**
+     * Cancel button functionality
+     * @param actionEvent
+     */
     public void cancelBtnAction(ActionEvent actionEvent) {
         status_ta.setText("Cancelled Action");
         resetFields();
     }
 
+    /**
+     * Quit application button, updates data.dat file on quit
+     * @param event
+     */
     @FXML
     public void quitBtnAction(ActionEvent event) {
         updateData();

@@ -25,12 +25,16 @@ import java.security.spec.ECField;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Extends Controller class to represent User function
+ * @author Hemang Hirpara hhh23
+ * @author Poojan Patel pdp83
+ */
 public class UserSystemController extends Controller implements Initializable {
     @FXML private TextField name_tf, numPhotos_tf, start_tf, end_tf;
     @FXML private Button create_btn,delete_btn, edit_btn, cancel_btn, open_btn;
     @FXML private TextArea status_ta;
     @FXML private ListView album_list;
-
 
     private User curr_user;
     private List<User> userList;
@@ -39,17 +43,30 @@ public class UserSystemController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
+    /**
+     * Initialize fields for user that has logged into the system
+     * @param userList list of users for system
+     * @param user current user logged in
+     */
     public void initData(List<User> userList, User user){
         this.userList = userList;
         this.curr_user = user;
         this.albums = curr_user.getAlbums();
         observableAlbumList = FXCollections.observableList(this.albums);
         this.album_list.setItems(observableAlbumList);
+
+        if(albums.size() > 0){
+            album_list.getSelectionModel().selectFirst();
+            displayDetails((Album) album_list.getSelectionModel().getSelectedItem());
+        }
     }
 
+    /**
+     * Create album button functionality
+     * @param event
+     */
     public void createBtnAction(ActionEvent event) {
         status_ta.setText("creating Album");
         if(create_btn.getText().equals("Create")){
@@ -83,6 +100,10 @@ public class UserSystemController extends Controller implements Initializable {
 
     }
 
+    /**
+     * Edit album button functionality
+     * @param event
+     */
     public void edit_BtnAction(ActionEvent event) {
         status_ta.setText("editing Album");
         String org = "";
@@ -119,6 +140,10 @@ public class UserSystemController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Delete album button functionality
+     * @param event
+     */
     public void deleteBtnAction(ActionEvent event) {
         status_ta.setText("deleting Album");
         if(delete_btn.getText().equals("Delete")){
@@ -143,16 +168,28 @@ public class UserSystemController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Cancel button functionality
+     * @param event
+     */
     public void cancelBtnAction(ActionEvent event) {
         status_ta.setText("action canceled");
         resetFields();
     }
 
+    /**
+     * Quit application button functionality
+     * @param event
+     */
     public void quitBtnAction(ActionEvent event) {
         updateData();
         System.exit(1);
     }
 
+    /**
+     * Open album button functionality
+     * @param event
+     */
     public void openBtnAction(ActionEvent event) {
         Album toOpen = (Album) album_list.getSelectionModel().getSelectedItem();
         try{
@@ -161,6 +198,10 @@ public class UserSystemController extends Controller implements Initializable {
             PhotoSystemController controller = loader.getController();
             Scene photoScene = new Scene(parent);
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            if(toOpen == null) {
+                status_ta.setText("Select an album to open");
+                return;
+            }
             controller.initData(this.userList, curr_user, toOpen, stage);
             stage.setScene(photoScene);
             stage.show();
@@ -169,12 +210,20 @@ public class UserSystemController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Display album details on mouse click
+     * @param mouseEvent
+     */
     public void displayDetails(MouseEvent mouseEvent) {
         Album temp = (Album) album_list.getSelectionModel().getSelectedItem();
         displayDetails(temp);
 
     }
 
+    /**
+     * Display album details based on input album
+     * @param a album details to display
+     */
     private void displayDetails(Album a){
         if(a == null){
             name_tf.setText("null");
@@ -191,6 +240,9 @@ public class UserSystemController extends Controller implements Initializable {
 
     }
 
+    /**
+     * Reset text fields and buttons to initial values
+     */
     private void resetFields() {
         name_tf.setEditable(false);
         create_btn.setText("Create");
@@ -207,6 +259,9 @@ public class UserSystemController extends Controller implements Initializable {
         album_list.setDisable(false);
     }
 
+    /**
+     * Update data into data.dat file for serialization
+     */
     private void updateData() {
         try {
             FileOutputStream fos = new FileOutputStream(getDataPath());

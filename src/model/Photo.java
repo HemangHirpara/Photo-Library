@@ -3,7 +3,9 @@ package model;
 import java.io.File;
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
  */
 public class Photo implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Time dateTaken;
+    private Date dateTaken;
     private List<Tag> tags;
     private String caption;
     private File photoFile;
@@ -29,11 +31,11 @@ public class Photo implements Serializable {
     public Photo(String caption, File photoFile){
         this.path = photoFile.getPath();
         this.caption = caption.equals("") ? "N/A" : caption;
-        this.dateTaken = new Time(photoFile.lastModified());
+        this.dateTaken = new Date(photoFile.lastModified());
         this.tags = new ArrayList<Tag>();
         this.photoFile = photoFile;
     }
-    public Time getDateTaken() {
+    public Date getDateTaken() {
         return dateTaken;
     }
 
@@ -79,6 +81,14 @@ public class Photo implements Serializable {
     public void deleteTag(int i){
         if (tags == null) return;
         tags.remove(i);
+    }
+
+    /**
+     * Returns the date of this photo in String formatted 'MM/dd/yy'.
+     * @return the date of this photo in 'MM/dd/yy'
+     */
+    public String getDateString(){
+        return new SimpleDateFormat("MM/dd/yy").format(this.dateTaken);
     }
 
     public boolean equals(Object o){

@@ -14,6 +14,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+/**
+ * Abstract class to represent controller for each view
+ * @author Hemang Hirpara hhh23
+ * @author Poojan Patel pdp83
+ */
 public abstract class Controller {
     private final String dataPath = "data/data.dat";
 
@@ -21,6 +26,11 @@ public abstract class Controller {
         return dataPath;
     }
 
+    /**
+     * Handles functionality when logout button is pressed. Saves all data in application
+     * @param event
+     * @throws IOException
+     */
     public void logoutBtnAction(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
         Parent parent = (Parent) loader.load();

@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * @author hhh23 and pdp83
- * Controller for the login page, handles login
+ * Extends Controller class to represent login function
+ * @author Hemang Hirpara hhh23
+ * @author Poojan Patel pdp83
  */
 public class LoginController extends Controller implements Initializable {
 
@@ -27,6 +28,11 @@ public class LoginController extends Controller implements Initializable {
 
     List<User> userList;
 
+    /**
+     * Initialize application with user list stored in data.dat
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         File data = new File(getDataPath());
@@ -71,6 +77,7 @@ public class LoginController extends Controller implements Initializable {
             }
         }
     }
+
     /**
      * handles which scene to goto depending on the username
      * @param event on login_btn pressed

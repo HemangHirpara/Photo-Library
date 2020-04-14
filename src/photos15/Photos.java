@@ -8,6 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * Main Class to run photo library. Handles a single user, stores information for multiple users with serialized data
+ * @author Hemang Hirpara hhh23
+ * @author Poojan Patel pdp83
+ */
 public class Photos extends Application {
 
     @Override
