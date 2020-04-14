@@ -1,11 +1,9 @@
 package model;
 
-import javafx.scene.image.Image;
-
 import java.io.File;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,33 +12,32 @@ import java.util.List;
  */
 public class Photo implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Date dateTaken;
+    private Time dateTaken;
     private List<Tag> tags;
     private String caption;
     private File photoFile;
-    private Image photoImage;
+    private String path;
 
-    public Photo(File photoFile, String caption){
-        this.photoFile = photoFile;
-        this.photoImage = new Image(photoFile.getPath());
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Photo(String caption, File photoFile){
+        this.path = photoFile.getPath();
         this.caption = caption.equals("") ? "N/A" : caption;
-        this.dateTaken = new Date(photoFile.lastModified());
+        this.dateTaken = new Time(photoFile.lastModified());
         this.tags = new ArrayList<Tag>();
+        this.photoFile = photoFile;
     }
-
-    public Image getPhotoImage() {
-        return photoImage;
-    }
-
-    public void setPhotoImage(Image photoImage) {
-        this.photoImage = photoImage;
-    }
-
-    public Date getDateTaken() {
+    public Time getDateTaken() {
         return dateTaken;
     }
 
-    public void setDateTaken(Date dateTaken) {
+    public void setDateTaken(Time dateTaken) {
         this.dateTaken = dateTaken;
     }
 
@@ -88,6 +85,6 @@ public class Photo implements Serializable {
         if (o == null || !(o instanceof Photo))
             return false;
         Photo op = (Photo) o;
-        return this.getPhotoFile().getPath().equals(op.getPhotoFile().getPath());
+        return this.photoFile.equals(op.photoFile);
     }
 }

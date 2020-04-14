@@ -11,56 +11,51 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoSystemController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoSystemController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Photos">
          <font>
             <Font name="SF Mono Bold" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="add_btn" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" onAction="#addBtnAction" text="Add" />
-      <Button fx:id="remove_btn" layoutX="63.0" layoutY="342.0" mnemonicParsing="false" text="Remove" />
-      <Button fx:id="move_btn" layoutX="137.0" layoutY="342.0" mnemonicParsing="false" text="Move" />
-      <Button fx:id="copy_btn" layoutX="194.0" layoutY="342.0" mnemonicParsing="false" text="Copy" />
-      <Button fx:id="logout_btn" layoutX="462.0" layoutY="632.0" mnemonicParsing="false" text="Logout" />
-      <Button fx:id="quit_btn" layoutX="537.0" layoutY="632.0" mnemonicParsing="false" text="Quit" />
-      <Button fx:id="cancel_btn" layoutX="17.0" layoutY="576.0" mnemonicParsing="false" text="Cancel" />
-      <Button fx:id="search_btn" layoutX="17.0" layoutY="522.0" mnemonicParsing="false" text="Search" />
-      <TextField fx:id="dateFrom_tf" layoutX="17.0" layoutY="441.0" prefHeight="27.0" prefWidth="93.0" promptText="mm/dd/yy" />
-      <TextField fx:id="tagsearch_tf" layoutX="17.0" layoutY="481.0" promptText="Search By Tag(s)" />
-      <ChoiceBox fx:id="tags_cb" layoutX="428.0" layoutY="342.0" prefWidth="150.0" />
-      <Label layoutX="317.0" layoutY="347.0" prefHeight="17.0" prefWidth="47.0" text="Tag(s):" />
-      <Label layoutX="317.0" layoutY="385.0" prefHeight="17.0" prefWidth="47.0" text="Caption:" />
-      <TextField fx:id="cap_tf" editable="false" layoutX="428.0" layoutY="380.0" prefHeight="27.0" prefWidth="150.0" />
-      <Label layoutX="317.0" layoutY="420.0" prefHeight="17.0" prefWidth="76.0" text="Date/Time:" />
-      <TextField fx:id="date_tf" editable="false" layoutX="428.0" layoutY="415.0" prefHeight="27.0" prefWidth="150.0" />
-      <Label layoutX="317.0" layoutY="463.0" prefHeight="17.0" prefWidth="62.0" text="Tag Type:" />
-      <TextField fx:id="tagtype_tf" layoutX="428.0" layoutY="458.0" prefHeight="27.0" prefWidth="150.0" />
-      <Label layoutX="317.0" layoutY="500.0" prefHeight="17.0" prefWidth="62.0" text="Tag Value:" />
-      <TextField fx:id="tagval_tf" layoutX="428.0" layoutY="495.0" prefHeight="27.0" prefWidth="150.0" />
-      <Button fx:id="add_tag_btn" layoutX="320.0" layoutY="576.0" mnemonicParsing="false" text="Add Tag" />
-      <Button fx:id="edit_cap_btn" layoutX="399.0" layoutY="576.0" mnemonicParsing="false" text="Edit Caption" />
-      <Button fx:id="del_tag_btn" layoutX="495.0" layoutY="576.0" mnemonicParsing="false" text="Delete Tag" />
-      <Button fx:id="create_alb_btn" layoutX="161.0" layoutY="522.0" mnemonicParsing="false" text="Create Album" />
-      <TextField fx:id="albname_tf" layoutX="428.0" layoutY="536.0" prefHeight="27.0" prefWidth="150.0" />
-      <Label layoutX="309.0" layoutY="541.0" prefHeight="17.0" prefWidth="77.0" text="Album Name:" />
-      <TextArea fx:id="status_ta" layoutX="15.0" layoutY="625.0" prefHeight="41.0" prefWidth="237.0" promptText="status box" />
-      <Button fx:id="slideshow_btn" layoutX="135.0" layoutY="576.0" mnemonicParsing="false" text="Manual Slideshow" />
-      <Button fx:id="back_btn" layoutX="405.0" layoutY="632.0" mnemonicParsing="false" text="Back" />
-      <ListView fx:id="images_list" layoutX="16.0" layoutY="73.0" prefHeight="255.0" prefWidth="230.0" />
-      <Label fx:id="caption_lbl" layoutX="14.0" layoutY="50.0" text="Caption">
+      <ListView fx:id="images_list" layoutX="12.0" layoutY="385.0" prefHeight="351.0" prefWidth="254.0" />
+      <ImageView fx:id="img" fitHeight="360.0" fitWidth="300.0" layoutX="278.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="open_btn" layoutX="24.0" layoutY="289.0" mnemonicParsing="false" text="Open" />
+      <Button fx:id="move_btn" layoutX="148.0" layoutY="60.0" mnemonicParsing="false" text="Move" />
+      <Button fx:id="copy_btn" layoutX="216.0" layoutY="60.0" mnemonicParsing="false" text="Copy" />
+      <TextArea fx:id="status_ta" layoutX="14.0" layoutY="333.0" prefHeight="41.0" prefWidth="247.0" promptText="status box" />
+      <Button fx:id="add_btn" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#addBtnAction" text="Add" />
+      <Button fx:id="remove_btn" layoutX="74.0" layoutY="60.0" mnemonicParsing="false" text="Remove" />
+      <Button fx:id="cancel_btn" layoutX="208.0" layoutY="101.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="search_btn" layoutX="20.0" layoutY="246.0" mnemonicParsing="false" text="Search" />
+      <TextField fx:id="dateFrom_tf" layoutX="17.0" layoutY="147.0" prefHeight="27.0" prefWidth="93.0" promptText="mm/dd/yy" />
+      <TextField fx:id="tagsearch_tf" layoutX="17.0" layoutY="193.0" promptText="Search By Tag(s)" />
+      <Button fx:id="create_alb_btn" layoutX="162.0" layoutY="246.0" mnemonicParsing="false" text="Create Album" />
+      <Button fx:id="slideshow_btn" layoutX="138.0" layoutY="289.0" mnemonicParsing="false" text="Manual Slideshow" />
+      <TextField fx:id="dateTo_tf" layoutX="162.0" layoutY="147.0" prefHeight="27.0" prefWidth="93.0" promptText="mm/dd/yy" />
+      <Label layoutX="131.0" layoutY="150.0" text="to">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="img" fitHeight="255.0" fitWidth="312.0" layoutX="267.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="open_btn" layoutX="190.0" layoutY="37.0" mnemonicParsing="false" text="Open" />
-      <TextField fx:id="dateTo_tf" layoutX="143.0" layoutY="441.0" prefHeight="27.0" prefWidth="93.0" promptText="mm/dd/yy" />
-      <Label layoutX="119.0" layoutY="445.0" text="to">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="album_cb" layoutX="14.0" layoutY="389.0" prefWidth="150.0" />
+      <ComboBox fx:id="album_cb" layoutX="17.0" layoutY="101.0" prefWidth="150.0" />
+      <Button fx:id="logout_btn" layoutX="468.0" layoutY="716.0" mnemonicParsing="false" text="Logout" />
+      <Button fx:id="quit_btn" layoutX="537.0" layoutY="716.0" mnemonicParsing="false" text="Quit" />
+      <ChoiceBox fx:id="tags_cb" layoutX="401.0" layoutY="417.0" prefWidth="150.0" />
+      <Label layoutX="314.0" layoutY="422.0" prefHeight="17.0" prefWidth="47.0" text="Tag(s):" />
+      <Label layoutX="314.0" layoutY="460.0" prefHeight="17.0" prefWidth="47.0" text="Caption:" />
+      <TextField fx:id="cap_tf" editable="false" layoutX="401.0" layoutY="455.0" prefHeight="27.0" prefWidth="150.0" />
+      <Label layoutX="306.0" layoutY="502.0" prefHeight="17.0" prefWidth="76.0" text="Date/Time:" />
+      <TextField fx:id="date_tf" editable="false" layoutX="401.0" layoutY="497.0" prefHeight="27.0" prefWidth="150.0" />
+      <Label layoutX="306.0" layoutY="543.0" prefHeight="17.0" prefWidth="62.0" text="Tag Type:" />
+      <TextField fx:id="tagtype_tf" layoutX="401.0" layoutY="538.0" prefHeight="27.0" prefWidth="150.0" />
+      <Label layoutX="306.0" layoutY="579.0" prefHeight="17.0" prefWidth="62.0" text="Tag Value:" />
+      <TextField fx:id="tagval_tf" layoutX="401.0" layoutY="574.0" prefHeight="27.0" prefWidth="150.0" />
+      <Button fx:id="add_tag_btn" layoutX="305.0" layoutY="656.0" mnemonicParsing="false" text="Add Tag" />
+      <Button fx:id="edit_cap_btn" layoutX="378.0" layoutY="656.0" mnemonicParsing="false" text="Edit Caption" />
+      <Button fx:id="del_tag_btn" layoutX="468.0" layoutY="656.0" mnemonicParsing="false" text="Delete Tag" />
+      <TextField fx:id="albname_tf" layoutX="401.0" layoutY="613.0" prefHeight="27.0" prefWidth="150.0" />
+      <Label layoutX="305.0" layoutY="618.0" prefHeight="17.0" prefWidth="77.0" text="Album Name:" />
+      <Button fx:id="back_btn" layoutX="405.0" layoutY="716.0" mnemonicParsing="false" text="Back" />
    </children>
 </Pane>
