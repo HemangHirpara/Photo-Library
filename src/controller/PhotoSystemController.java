@@ -379,6 +379,7 @@ public class PhotoSystemController extends Controller implements Initializable{
             }
             controller.initData(this.userList, user, album);
             stage.setScene(photoScene);
+            stage.centerOnScreen();
             stage.show();
         }catch (Exception e){
             e.printStackTrace();

@@ -108,6 +108,7 @@ public class LoginController extends Controller implements Initializable {
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             controller.initData(this.userList);
             stage.setScene(adminScene);
+            stage.centerOnScreen();
             stage.show();
             return;
         }
@@ -120,6 +121,7 @@ public class LoginController extends Controller implements Initializable {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         controller.initData(this.userList, currUser);
         stage.setScene(userScene);
+        stage.centerOnScreen();
         stage.show();
         return;
 

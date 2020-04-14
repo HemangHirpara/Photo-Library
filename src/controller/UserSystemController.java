@@ -205,6 +205,7 @@ public class UserSystemController extends Controller implements Initializable {
             }
             controller.initData(this.userList, curr_user, toOpen, stage);
             stage.setScene(photoScene);
+            stage.centerOnScreen();
             stage.show();
         }catch (Exception e){
             e.printStackTrace();

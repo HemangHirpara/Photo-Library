@@ -65,6 +65,7 @@ public class SlideshowController extends Controller implements Initializable {
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             controller.initData(this.userList, user, album, stage);
             stage.setScene(photoScene);
+            stage.centerOnScreen();
             stage.show();
         }catch (Exception e){
             e.printStackTrace();
