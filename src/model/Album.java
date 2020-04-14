@@ -65,6 +65,8 @@ public class Album implements Serializable {
     }
 
     public void updateDates(){
+        start = null;
+        end = null;
         for(Photo p : photos)
         {
             if(start == null || p.getDateTaken().compareTo(start) < 0)
@@ -72,6 +74,8 @@ public class Album implements Serializable {
             if(end == null || p.getDateTaken().compareTo(end) > 0)
                 setEnd(p.getDateTaken());
         }
+        if(photos.size() == 0 && start != null) start = null;
+        if(photos.size() == 0 && end != null) end = null;
     }
 
 

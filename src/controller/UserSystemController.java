@@ -235,8 +235,8 @@ public class UserSystemController extends Controller implements Initializable {
         {
             name_tf.setText(a.getName());
             numPhotos_tf.setText(a.getNumPhotos()+"");
-            start_tf.setText(a.getStartString());
-            end_tf.setText(a.getEndString());
+            start_tf.setText((a.getNumPhotos() == 0) ? "-" : a.getStartString());
+            end_tf.setText((a.getNumPhotos() == 0) ? "-" : a.getEndString());
         }
     }
 

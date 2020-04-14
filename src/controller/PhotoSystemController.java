@@ -330,7 +330,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         {
             Album toMoveto = (Album) album_cb.getSelectionModel().getSelectedItem();
             Photo toMove = images_list.getSelectionModel().getSelectedItem();
-            if(toMoveto.equals(album)|| toMove == null)
+            if(toMoveto.equals(album)|| toMove == null || toMoveto.getPhotos().contains(toMove))
             {
                 status_ta.setText("cannot move ");
                 move_btn.setText("Move");
@@ -362,7 +362,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         {
             Album toCopyto = (Album) album_cb.getSelectionModel().getSelectedItem();
             Photo toCopy = images_list.getSelectionModel().getSelectedItem();
-            if(toCopyto.equals(album) || toCopy == null)
+            if(toCopyto.equals(album) || toCopy == null || toCopyto.getPhotos().contains(toCopy))
             {
                 status_ta.setText("cannot copy");
                 copy_btn.setText("Copy");

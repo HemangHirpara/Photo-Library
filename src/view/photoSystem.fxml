@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -20,7 +19,7 @@
          </font>
       </Label>
       <ListView fx:id="images_list" layoutX="265.0" layoutY="65.0" prefHeight="236.0" prefWidth="254.0" />
-      <Button fx:id="open_btn" layoutX="473.0" layoutY="307.0" mnemonicParsing="false" onAction="#openBtnAction" text="Open" />
+      <Button fx:id="open_btn" layoutX="434.0" layoutY="307.0" mnemonicParsing="false" onAction="#openBtnAction" text="Open Image" />
       <TextField fx:id="status_ta" editable="false" layoutX="142.0" layoutY="704.0" prefHeight="17.0" prefWidth="192.0" promptText="status box" />
       <TextField fx:id="dateFrom_tf" layoutX="535.0" layoutY="163.0" prefHeight="27.0" prefWidth="73.0" promptText="mm/dd/yy" />
       <TextField fx:id="tagsearch_tf" layoutX="535.0" layoutY="207.0" prefHeight="25.0" prefWidth="130.0" promptText="Search By Tag(s)" />
@@ -70,7 +69,7 @@
       <Label fx:id="move_lbl" layoutX="116.0" layoutY="79.0" text="Move / Copy to Album" visible="false" />
       <Button fx:id="search_btn" layoutX="533.0" layoutY="65.0" mnemonicParsing="false" text="Search by Date" />
       <Button fx:id="remove_btn" layoutX="21.0" layoutY="116.0" mnemonicParsing="false" onAction="#removeBtnAction" text="Delete" />
-      <Button fx:id="add_btn" layoutX="21.0" layoutY="74.0" mnemonicParsing="false" onAction="#addBtnAction" text="Add" />
+      <Button fx:id="add_btn" layoutX="27.0" layoutY="74.0" mnemonicParsing="false" onAction="#addBtnAction" text="Add" />
       <Button fx:id="copy_btn" layoutX="24.0" layoutY="163.0" mnemonicParsing="false" onAction="#copyBtnAction" text="Copy" />
       <Button fx:id="move_btn" layoutX="23.0" layoutY="207.0" mnemonicParsing="false" onAction="#moveBtnAction" text="Move" />
       <Button fx:id="cancel_btn" layoutX="19.0" layoutY="258.0" mnemonicParsing="false" onAction="#move_cpy_cancel" text="Cancel" visible="false" />

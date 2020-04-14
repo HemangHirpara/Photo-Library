@@ -84,7 +84,8 @@ public class LoginController extends Controller implements Initializable {
      * @throws IOException incase there is a error setting or creating the new scene
      */
     public void loginBtnAction(ActionEvent event) throws IOException {
-        String usr = username_tf.getText().toLowerCase();
+        //String usr = username_tf.getText().toLowerCase();
+        String usr = username_tf.getText();
         FXMLLoader loader;
         Parent parent;
 
