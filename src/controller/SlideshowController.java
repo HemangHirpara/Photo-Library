@@ -23,6 +23,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Extends Controller class to represent Slideshow function
+ * @author Hemang Hirpara hhh23
+ * @author Poojan Patel pdp83
+ */
 public class SlideshowController extends Controller implements Initializable {
 
     @FXML private ImageView img_slide;
@@ -37,6 +42,10 @@ public class SlideshowController extends Controller implements Initializable {
 
     }
 
+    /**
+     * Initialize Slideshow album to show
+     * @param userList
+     */
     public void initData(List<User> userList, User user, Album album){
         this.userList = userList;
         this.user = user;
@@ -56,6 +65,10 @@ public class SlideshowController extends Controller implements Initializable {
         System.exit(1);
     }
 
+    /**
+     * Back button functionality to return to previous window
+     * @param event
+     */
     public void backBtnAction(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
@@ -72,6 +85,10 @@ public class SlideshowController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Next button functionality to move slideshow to next image in album
+     * @param actionEvent
+     */
     public void nextImage(ActionEvent actionEvent) {
         if(counter+1<image_list.size()) {
             counter++;
@@ -81,6 +98,10 @@ public class SlideshowController extends Controller implements Initializable {
         return;
     }
 
+    /**
+     * Previous button functionality to move slideshow to previous image in album
+     * @param actionEvent
+     */
     public void prevImage(ActionEvent actionEvent) {
         if(counter-1 >= 0){
             counter--;
@@ -90,6 +111,9 @@ public class SlideshowController extends Controller implements Initializable {
         return;
     }
 
+    /**
+     * Update data into data.dat file for serialization
+     */
     private void updateData() {
         try {
             FileOutputStream fos = new FileOutputStream(getDataPath());

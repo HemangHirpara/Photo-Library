@@ -46,7 +46,11 @@ public class Album implements Serializable {
         return true;
     }
 
-
+    /**
+     * Remove photo from photo list and recompute start and end dates
+     * @param photo photo to be removed
+     * @return true if photo can be removed, false if it does not exist
+     */
     public boolean removePhoto(Photo photo){
         if(!photos.contains(photo))
             return false;
@@ -64,6 +68,9 @@ public class Album implements Serializable {
         return true;
     }
 
+    /**
+     * Update date range for album
+     */
     public void updateDates(){
         start = null;
         end = null;

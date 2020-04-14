@@ -11,12 +11,20 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import model.Photo;
 
+/**
+ * Photo Thumbnail class to represent a photo in a list view, extends a list cell
+ * @author Hemang Hirpara hhh23
+ * @author Poojan Patel pdp83
+ */
 public class PhotoThumbnail extends ListCell<Photo> {
     AnchorPane aPane = new AnchorPane();
     StackPane sPane = new StackPane();
     ImageView imageView = new ImageView();
     Label captionText = new Label(), caption = new Label();
 
+    /**
+     * Constructor to create a photo thumbnail
+     */
     public PhotoThumbnail(){
         super();
         caption.setFont(Font.font("Arial", FontWeight.MEDIUM, 14));

@@ -105,7 +105,7 @@ public class AdminSystemController extends Controller{
     }
 
     /**
-     * Update user button functionality
+     * Update data into data.dat file for serialization
      */
     private void updateData() {
         try {

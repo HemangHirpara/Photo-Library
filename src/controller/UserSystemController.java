@@ -20,7 +20,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.security.spec.ECField;
 import java.util.List;
 import java.util.ResourceBundle;
 

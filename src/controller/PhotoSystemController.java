@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -24,7 +23,6 @@ import photos15.PhotoThumbnail;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -62,6 +60,13 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     }
 
+    /**
+     * Initialize application with data passed. Initial view of photo system
+     * @param userList
+     * @param user
+     * @param album
+     * @param stage
+     */
     public void initData(List<User> userList, User user, Album album, Stage stage){
         this.stage = stage;
         this.user = user;
@@ -82,6 +87,10 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     }
 
+    /**
+     * Add button functionality, add a new image to album, only allow jpg, jpeg, and png image formats
+     * @param actionEvent
+     */
     public void addBtnAction(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a Photo");
@@ -108,6 +117,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    /**
+     * Remove button functionality, remove selected image from album
+     * @param event
+     */
     public void removeBtnAction(ActionEvent event) {
         images_list.setDisable(true);
         Photo toDelete = images_list.getSelectionModel().getSelectedItem();
@@ -124,6 +137,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         images_list.setDisable(false);
     }
 
+    /**
+     * Open button functionality to open selected image in display area
+     * @param actionEvent
+     */
     public void openBtnAction(ActionEvent actionEvent) {
         Photo toOpen = images_list.getSelectionModel().getSelectedItem();
         if(toOpen == null)
@@ -134,6 +151,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    /**
+     * Add tag button functionality, allow a new tag to be added to an image
+     * @param actionEvent
+     */
     public void addTagBtnAction(ActionEvent actionEvent) {
         //on click, make all text fields disappear, bring focus to tag text fields
         Photo p = images_list.getSelectionModel().getSelectedItem();
@@ -179,6 +200,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    /**
+     * Delete tag button functionality, allow a tag to be deleted from an image
+     * @param actionEvent
+     */
     public void deleteTagBtnAction(ActionEvent actionEvent) {
         Photo p = images_list.getSelectionModel().getSelectedItem();
         Tag t = tags_cb.getSelectionModel().getSelectedItem();
@@ -199,6 +224,11 @@ public class PhotoSystemController extends Controller implements Initializable{
 
 
     }
+
+    /**
+     * Edit caption button functionality, allow changing of image caption
+     * @param actionEvent
+     */
     public void editCaptionBtnAction(ActionEvent actionEvent) {
         if(images_list.getSelectionModel().getSelectedItem() == null){
             status_ta.setText("no image selected");
@@ -244,6 +274,9 @@ public class PhotoSystemController extends Controller implements Initializable{
         System.exit(1);
     }
 
+    /**
+     * Reset buttons, textfields, and listview to initial values
+     */
     private void resetFields() {
         images_list.setDisable(false);
         images_list.setEditable(true);
@@ -291,6 +324,9 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     }
 
+    /**
+     * Update data into data.dat file for serialization
+     */
     private void updateData() {
         try {
             FileOutputStream fos = new FileOutputStream(getDataPath());
@@ -305,6 +341,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    /**
+     * Back button functionality to return to previous window
+     * @param event
+     */
     public void backBtnAction(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/userSystem.fxml"));
@@ -320,6 +360,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    /**
+     * Move button functionality to move, thereby deleting, an image from current album to another album
+     * @param actionEvent
+     */
     public void moveBtnAction(ActionEvent actionEvent) {
         images_list.setDisable(true);
         if(move_btn.getText().equals("Move")) {
@@ -352,6 +396,10 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     }
 
+    /**
+     * Copy button functionality to copy, without removing, an image from current album to another album
+     * @param actionEvent
+     */
     public void copyBtnAction(ActionEvent actionEvent) {
         images_list.setDisable(true);
         if(copy_btn.getText().equals("Copy")) {
@@ -383,6 +431,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    /**
+     * Reset fields and buttons modified by move and copy function
+     * @param b
+     */
     public void move_cpy_reset(boolean b){
         move_lbl.setVisible(b);
         album_cb.setVisible(b);
@@ -391,6 +443,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         cancel_btn.setVisible(b);
     }
 
+    /**
+     * Cancel move and copy actions and reset values
+     * @param actionEvent
+     */
     public void move_cpy_cancel(ActionEvent actionEvent) {
         status_ta.setText("cancelled move/copy action");
         copy_btn.setText("Copy");
@@ -401,6 +457,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         move_cpy_reset(false);
     }
 
+    /**
+     * Slideshow button functionality, opens a window to show slideshow
+     * @param event
+     */
     public void slideshow(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/slideshow.fxml"));
