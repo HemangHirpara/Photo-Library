@@ -63,7 +63,7 @@ public class LoginController extends Controller implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //addPhotos(stock);
+            addPhotos(stock);
         }else {
             // read in the data from the file
             try {
@@ -87,12 +87,12 @@ public class LoginController extends Controller implements Initializable {
      */
     public void addPhotos(User stock){
         Album stockAlbum = new Album("stock album");
-        File path0 = new File("/data/stock/img0.jpg");
-        File path1 = new File("/data/stock/img1.jpg");
-        File path2 = new File("/data/stock/img2.jpg");
-        File path3 = new File("/data/stock/img3.jpg");
-        File path4 = new File("/data/stock/img4.jpg");
-        File path5 = new File("/data/stock/img5s.jpg");
+        File path0 = new File("data/stock/img0.jpg");
+        File path1 = new File("data/stock/img1.jpg");
+        File path2 = new File("data/stock/img2.jpg");
+        File path3 = new File("data/stock/img3.jpg");
+        File path4 = new File("data/stock/img4.jpg");
+        File path5 = new File("data/stock/img5.jpg");
         stockAlbum.addPhoto(new Photo(path0.getName(), path0));
         stockAlbum.addPhoto(new Photo(path1.getName(), path1));
         stockAlbum.addPhoto(new Photo(path2.getName(), path2));
@@ -100,18 +100,6 @@ public class LoginController extends Controller implements Initializable {
         stockAlbum.addPhoto(new Photo(path4.getName(), path4));
         stockAlbum.addPhoto(new Photo(path5.getName(), path5));
         stock.getAlbums().add(stockAlbum);
-
-        try {
-            FileOutputStream fos = new FileOutputStream(getDataPath());
-            ObjectOutputStream ous = new ObjectOutputStream(fos);
-            ous.writeObject(userList);
-            ous.close();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
