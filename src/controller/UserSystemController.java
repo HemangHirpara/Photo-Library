@@ -22,9 +22,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+
 
 /**
  * Extends Controller class to represent User function
@@ -85,14 +87,14 @@ public class UserSystemController extends Controller implements Initializable {
             for(Photo photo : a.getPhotos()){
                 if(!allPhotos.contains(photo))
                     allPhotos.add(photo);
+                for(String type : photo.getTagTypes().keySet())
+                    if(!tagTypes.contains(type))
+                        tagTypes.add(type);
                 // get all tagTypes and values
                 for(Tag t : photo.getTags()){
-                    if(!tagTypes.contains(t.getName()))
-                        tagTypes.add(t.getName());
                     //get all values
-                    for(String val : t.getValues())
-                        if(!tagValues.contains(val))
-                            tagValues.add(val);
+                    if(!tagValues.contains(t.getValue()))
+                        tagValues.add(t.getValue());
                 }
             }
         }
@@ -322,7 +324,61 @@ public class UserSystemController extends Controller implements Initializable {
     public void searchTag(ActionEvent actionEvent) {
     }
 
-    public void searchDate(ActionEvent actionEvent) {
+    public void searchDate(ActionEvent event) {
+        if(searchDate_btn.getText().equals("Search by Date")){
+            searchDate_btn.setText("Go");
+            from_date.setDisable(false);
+            to_date.setDisable(false);
+        }
+        else
+        {
+            searchDate_btn.setText("Search by Date");
+            from_date.setDisable(true);
+            to_date.setDisable(true);
+            if(from_date.getValue() == null || to_date.getValue() == null)
+            {
+                status_ta.setText("missing date range");
+                return;
+            }
+            Date lowerLimit = Date.from(from_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date upperLimit = Date.from(to_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            if(lowerLimit.compareTo(upperLimit) > 0)
+            {
+                status_ta.setText("end cannot come before the beginning");
+                return;
+            }
+
+            // make result
+            List<Photo> result = new ArrayList<>();
+            for(Photo p : allPhotos){
+                System.out.println(p.getDateTaken().toString());
+                if(p.getDateTaken().compareTo(lowerLimit) >= 0 && p.getDateTaken().compareTo(upperLimit) <= 0){
+                    result.add(p);
+                }
+            }
+
+            if(result.size() == 0)
+                status_ta.setText("No photos found");
+            else {
+                Album resultAlbum = new Album("Search Results");
+                resultAlbum.setPhotos(result);
+                try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
+                    Parent parent = (Parent) loader.load();
+                    PhotoSystemController controller = loader.getController();
+                    Scene photoScene = new Scene(parent);
+                    Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                    controller.initData(this.userList, curr_user, resultAlbum, stage);
+                    stage.setScene(photoScene);
+                    stage.centerOnScreen();
+                    stage.show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 }
 

@@ -21,8 +21,10 @@ import model.Tag;
 import model.User;
 import photos15.PhotoThumbnail;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -35,26 +37,21 @@ public class PhotoSystemController extends Controller implements Initializable{
     @FXML private ListView<Photo> images_list;
     @FXML private TextField status_ta;
     @FXML private ComboBox<Tag> tags_cb;
-    @FXML private TextField cap_tf;
-    @FXML private TextField date_tf;
-    @FXML private TextField tagtype_tf;
-    @FXML private TextField tagval_tf;
-    @FXML private TextField albname_tf;
-    @FXML private Button add_tag_btn;
-    @FXML private Button del_tag_btn;
-    @FXML private Button edit_cap_btn;
-    @FXML private Button cancel_btn1;
-    @FXML private Button add_btn, remove_btn, move_btn, copy_btn, cancel_btn;
+    @FXML private ComboBox<String> tagtypes_cb;
+    @FXML private TextField cap_tf, date_tf, tagtype_tf, tagval_tf, albname_tf, new_name;
+    @FXML private Button add_tag_btn, del_tag_btn,edit_cap_btn, cancel_btn1;
+    @FXML private Button add_btn, remove_btn, move_btn, copy_btn, cancel_btn, create_alb, cancel3_btn;
     @FXML private Label move_lbl;
     @FXML private ImageView img;
     @FXML private ComboBox album_cb;
-    @FXML private CheckBox isMult_cb;
+    @FXML private CheckBox isSingle_cb;
     @FXML private Label photos_lbl;
 
     private Stage stage;
     private User user;
     private Album album;
     private List<User> userList;
+    private List<String> tagTypes;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -68,7 +65,7 @@ public class PhotoSystemController extends Controller implements Initializable{
      * @param album
      * @param stage
      */
-    public void initData(List<User> userList, User user, Album album, Stage stage){
+    public void initData(List<User> userList, User user, Album album, Stage stage) {
         this.stage = stage;
         this.user = user;
         this.userList = userList;
@@ -80,13 +77,133 @@ public class PhotoSystemController extends Controller implements Initializable{
                 return new PhotoThumbnail();
             }
         });
+
         images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
 
         album_cb.setItems(FXCollections.observableList(user.getAlbums()));
-        if(user.getAlbums().size() > 0)
+        if (user.getAlbums().size() > 0)
             album_cb.getSelectionModel().selectFirst();
 
+        if(album.getName().equals("Search Results")){
+            create_alb.setVisible(true);
+            new_name.setVisible(true);
+        }
     }
+
+    /**
+     * Display Tag deets
+     * @param actionEvent
+     */
+    public void tagSelected(ActionEvent actionEvent) {
+        if(tags_cb.getSelectionModel().getSelectedItem() != null){
+            tagtype_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getName());
+            tagval_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getValue());
+        }
+        else{
+            tagtype_tf.setText("");
+            tagval_tf.setText("");
+        }
+    }
+
+
+    /**
+     * Delete tag button functionality, allow a tag to be deleted from an image
+     * @param actionEvent
+     */
+    public void deleteTagBtnAction(ActionEvent actionEvent) {
+        Photo p = images_list.getSelectionModel().getSelectedItem();
+        Tag t = tags_cb.getSelectionModel().getSelectedItem();
+        if(p == null || t == null){
+            status_ta.setText("no image/tag selected");
+            resetFields();
+            return;
+        }
+        boolean res = p.deleteTag(t);
+        if(res){
+            status_ta.setText("tag deleted");
+            ObservableList<Tag> tagList = FXCollections.observableList(p.getTags());
+            tags_cb.setItems(tagList);
+            updateData();
+        }
+        else
+            status_ta.setText("delete failed");
+    }
+
+    /**
+     * add a new tag to a photo
+     * @param actionEvent
+     */
+    public void addTagBtnAction(ActionEvent actionEvent) {
+        if(add_tag_btn.getText().equals("Add Tag")){
+            cap_tf.setDisable(true);
+            date_tf.setDisable(true);
+            albname_tf.setDisable(true);
+            tags_cb.setDisable(true);
+            del_tag_btn.setVisible(false);
+            edit_cap_btn.setVisible(false);
+            cancel_btn1.setVisible(true);
+            tagtype_tf.setEditable(true);
+            tagtypes_cb.setDisable(false);
+            tagtype_tf.setPromptText("Tag Type");
+            tagval_tf.setEditable(true);
+            tagval_tf.requestFocus();
+            add_tag_btn.setText("Confirm");
+            isSingle_cb.setDisable(false);
+        }
+        else
+        {
+            if(tagtype_tf.getText().equals("") && tagtypes_cb.getSelectionModel().getSelectedItem() == null){
+                status_ta.setText("invalid type");
+                resetFields();
+            }
+            else if(tagval_tf.getText().equals("")){
+                status_ta.setText("invalid value");
+                resetFields();
+            }
+            else
+            {
+                Photo p = images_list.getSelectionModel().getSelectedItem();
+                //set tag type
+                String type = tagtypes_cb.getSelectionModel().getSelectedItem();
+                // if new type, add it to list
+                if(tagtypes_cb.getSelectionModel().getSelectedItem() == null){
+                    type = tagtype_tf.getText();
+                    p.getTagTypes().put(tagtype_tf.getText(), isSingle_cb.isSelected());
+                    tagTypes = new ArrayList<>(p.getTagTypes().keySet());
+                    tagtypes_cb.setItems(FXCollections.observableList(tagTypes));
+                    updateData();
+                }
+
+                // new tag
+                Tag toAdd = new Tag(type, tagval_tf.getText());
+                // if its a single tag, and it already exists dont add it
+                for(Tag t : p.getTags()){
+                    String tName = t.getName();
+                    if(p.getTagTypes().get(tName)){
+                        status_ta.setText("can only be one");
+                        resetFields();
+                        return;
+                    }
+                }
+
+                //addd it
+                if(p.addTag(toAdd))
+                {
+                    status_ta.setText("tag added");
+                    ObservableList<Tag> tagList = FXCollections.observableList(p.getTags());
+                    tags_cb.setItems(tagList);
+                    updateData();
+                }
+                else{
+                    status_ta.setText("tag already exists");
+                }
+                tagtypes_cb.getSelectionModel().clearSelection();
+                resetFields();
+            }
+        }
+    }
+
+
 
     /**
      * Add button functionality, add a new image to album, only allow jpg, jpeg, and png image formats
@@ -152,80 +269,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
-    /**
-     * Add tag button functionality, allow a new tag to be added to an image
-     * @param actionEvent
-     */
-    public void addTagBtnAction(ActionEvent actionEvent) {
-        //on click, make all text fields disappear, bring focus to tag text fields
-        Photo p = images_list.getSelectionModel().getSelectedItem();
-        if(p == null){
-            status_ta.setText("no image selected");
-            resetFields();
-            return;
-        }
-        if(add_tag_btn.getText().equals("Add Tag")) {
-            images_list.setDisable(true);
-            images_list.setEditable(false);
-            cap_tf.setDisable(true);
-            date_tf.setDisable(true);
-            albname_tf.setDisable(true);
-            tags_cb.setDisable(true);
-            del_tag_btn.setVisible(false);
-            edit_cap_btn.setVisible(false);
-            tagtype_tf.setEditable(true);
-            tagval_tf.setEditable(true);
-            cancel_btn1.setVisible(true);
-            tagval_tf.requestFocus();
-            tagtype_tf.requestFocus();
-            tagval_tf.setPromptText("Enter A Tag Value");
-            tagtype_tf.setPromptText("Enter A Tag Type");
-            add_tag_btn.setText("Confirm");
-            isMult_cb.setVisible(true);
-        }
-        else if(add_tag_btn.getText().equals("Confirm")) {
-            //error check, do no allow duplicate tags
-            //get image
-            Tag t = new Tag(tagtype_tf.getText(), tagval_tf.getText(), isMult_cb.isSelected());
-            boolean res = p.addTag(t);
-            if(res){
-                status_ta.setText("tag added");
-                ObservableList<Tag> tagList = FXCollections.observableList(p.getTags());
-                tags_cb.setItems(tagList);
-                updateData();
-            }
-            else
-                status_ta.setText("tag already exists");
-            add_tag_btn.setText("Add Tag");
 
-            resetFields();
-        }
-    }
-
-    /**
-     * Delete tag button functionality, allow a tag to be deleted from an image
-     * @param actionEvent
-     */
-    public void deleteTagBtnAction(ActionEvent actionEvent) {
-        Photo p = images_list.getSelectionModel().getSelectedItem();
-        Tag t = tags_cb.getSelectionModel().getSelectedItem();
-        if(p == null || t == null){
-            status_ta.setText("no image/tag selected");
-            resetFields();
-            return;
-        }
-        boolean res = p.deleteTag(t);
-        if(res){
-            status_ta.setText("tag deleted");
-            ObservableList<Tag> tagList = FXCollections.observableList(p.getTags());
-            tags_cb.setItems(tagList);
-            updateData();
-        }
-        else
-            status_ta.setText("delete failed");
-
-
-    }
 
     /**
      * Edit caption button functionality, allow changing of image caption
@@ -303,7 +347,8 @@ public class PhotoSystemController extends Controller implements Initializable{
         tagval_tf.setText("");
         tagtype_tf.setText("");
         cancel_btn1.setVisible(false);
-        isMult_cb.setVisible(false);
+        isSingle_cb.setDisable(true);
+        tagtypes_cb.setDisable(true);
     }
 
     /**
@@ -324,8 +369,10 @@ public class PhotoSystemController extends Controller implements Initializable{
             ObservableList<Tag> tagList = FXCollections.observableList(a.getTags());
             tags_cb.setItems(tagList);
             tags_cb.getSelectionModel().selectFirst();
+            // sets the tag types
+            tagTypes = new ArrayList<>(a.getTagTypes().keySet());
+            tagtypes_cb.setItems(FXCollections.observableList(tagTypes));
         }
-
     }
 
     /**
@@ -485,14 +532,37 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
-    public void tagSelected(ActionEvent actionEvent) {
-        if(tags_cb.getSelectionModel().getSelectedItem() != null){
-            tagtype_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getName());
-            tagval_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getValue());
+
+    public void createAlbum(ActionEvent event) {
+        if(create_alb.getText().equals("Create Album")){
+            create_alb.setText("Confirm");
+            cancel3_btn.setVisible(true);
+        }else {
+            String newName = new_name.getText();
+            if(newName.equals(""))
+            {
+                status_ta.setText("No name inputted");
+                cancelNewAlbum();
+                return;
+            }
+            album.setName(newName);
+            if(user.getAlbums().contains(album))
+            {
+                status_ta.setText("invalid album name");
+                create_alb.setText("Create Album");
+                cancel3_btn.setVisible(false);
+                new_name.setText("");
+                return;
+            }
+            user.getAlbums().add(album);
+            photos_lbl.setText(album.getName() + " - Photos");
+            updateData();
         }
-        else{
-            tagtype_tf.setText("");
-            tagval_tf.setText("");
-        }
+
+    }
+
+    public void cancelNewAlbum() {
+        cancel3_btn.setVisible(false);
+        status_ta.setText("cancelled");
     }
 }

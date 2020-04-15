@@ -55,16 +55,16 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <ComboBox fx:id="tagtype_cb" layoutX="500.0" layoutY="165.0" prefHeight="25.0" prefWidth="84.0" promptText="Name" />
-      <ComboBox fx:id="tagval_cb" layoutX="592.0" layoutY="165.0" prefHeight="25.0" prefWidth="84.0" promptText="Value" />
-      <Button fx:id="add_tag_btn" onAction="#addTagBtn" layoutX="696.0" layoutY="165.0" mnemonicParsing="false" text="Add" />
-      <Button fx:id="del_tag_btn" onAction="#delTagBtn" layoutX="737.0" layoutY="165.0" mnemonicParsing="false" text="Del" />
-      <ListView fx:id="tags_list" layoutX="500.0" layoutY="206.0" prefHeight="105.0" prefWidth="268.0" />
-      <DatePicker fx:id="from_date" layoutX="500.0" layoutY="320.0" prefHeight="25.0" prefWidth="92.0" promptText="From" />
-      <DatePicker fx:id="to_date" layoutX="610.0" layoutY="320.0" prefHeight="25.0" prefWidth="92.0" promptText="To" />
-      <Button fx:id="searchTag_btn" onAction="#searchTag" layoutX="495.0" layoutY="69.0" mnemonicParsing="false" text="Search By Tag(s)" />
-      <Button fx:id="searchDate_btn" onAction="#searchDate" layoutX="667.0" layoutY="69.0" mnemonicParsing="false" text="Search by Date" />
-      <CheckBox fx:id="and_cb" layoutX="495.0" layoutY="102.0" mnemonicParsing="false" text="Conjunctive (AND)" />
-      <CheckBox fx:id="or_cb" layoutX="495.0" layoutY="133.0" mnemonicParsing="false" text="Disjunctive (OR)" />
+      <ComboBox fx:id="tagtype_cb" disable="true" layoutX="500.0" layoutY="165.0" prefHeight="25.0" prefWidth="84.0" promptText="Name" />
+      <ComboBox fx:id="tagval_cb" disable="true" layoutX="592.0" layoutY="165.0" prefHeight="25.0" prefWidth="84.0" promptText="Value" />
+      <Button fx:id="add_tag_btn" disable="true" layoutX="696.0" layoutY="165.0" mnemonicParsing="false" onAction="#addTagBtn" text="Add" />
+      <Button fx:id="del_tag_btn" disable="true" layoutX="737.0" layoutY="165.0" mnemonicParsing="false" onAction="#delTagBtn" text="Del" />
+      <ListView fx:id="tags_list" disable="true" layoutX="500.0" layoutY="206.0" prefHeight="105.0" prefWidth="268.0" />
+      <DatePicker fx:id="from_date" disable="true" layoutX="500.0" layoutY="320.0" prefHeight="25.0" prefWidth="119.0" promptText="From" />
+      <DatePicker fx:id="to_date" disable="true" layoutX="658.0" layoutY="320.0" prefHeight="25.0" prefWidth="105.0" promptText="To" />
+      <Button fx:id="searchTag_btn" layoutX="495.0" layoutY="69.0" mnemonicParsing="false" onAction="#searchTag" text="Search By Tag(s)" />
+      <Button fx:id="searchDate_btn" layoutX="667.0" layoutY="69.0" mnemonicParsing="false" onAction="#searchDate" text="Search by Date" />
+      <CheckBox fx:id="and_cb" disable="true" layoutX="495.0" layoutY="102.0" mnemonicParsing="false" text="Conjunctive (AND)" />
+      <CheckBox fx:id="or_cb" disable="true" layoutX="495.0" layoutY="133.0" mnemonicParsing="false" text="Disjunctive (OR)" />
    </children>
 </Pane>

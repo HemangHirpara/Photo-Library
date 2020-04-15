@@ -6,6 +6,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,9 +17,18 @@ public class Photo implements Serializable {
     private static final long serialVersionUID = 1L;
     private Date dateTaken;
     private List<Tag> tags;
+    private HashMap<String, Boolean> tagTypes;
     private String caption;
     private File photoFile;
     private String path;
+
+    public HashMap<String, Boolean> getTagTypes() {
+        return tagTypes;
+    }
+
+    public void setTagTypes(HashMap<String, Boolean> tagTypes) {
+        this.tagTypes = tagTypes;
+    }
 
     /**
      * Constructor for photo object
@@ -31,6 +41,7 @@ public class Photo implements Serializable {
         this.dateTaken = new Date(photoFile.lastModified());
         this.tags = new ArrayList<Tag>();
         this.photoFile = photoFile;
+        tagTypes = new HashMap<>();
     }
 
     /**

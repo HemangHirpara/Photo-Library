@@ -13,28 +13,18 @@ import java.util.List;
 public class Tag implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
-    private List<String> value;
-    private boolean isMult;
+    private String value;
 
     /**
      * Constructor for a Tag, a key-value pair
      * @param name name of tag
      * @param val value of tag
      */
-    public Tag(String name, String val, boolean isMult) {
+    public Tag(String name, String val) {
         this.name = name.toLowerCase();
-        this.value = new ArrayList<>();
-        if(!isMult){
-            value.add(val);
-        }else
-            processValue(val);
+        this.value = val;
     }
 
-    public void processValue(String val){
-        String[] values = val.split(",");
-        for(String s: values)
-            this.value.add(s);
-    }
 
     public String getName() {
         return name;
@@ -44,17 +34,9 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
-    public List<String> getValues() {return this.value;}
 
     public String getValue() {
-        String res = "";
-        if(value.size() == 1)
-            return value.get(0);
-        for(int i = 0; i < value.size()-1;i++)
-            res = res + value.get(i) + ", ";
-        res+= value.get(value.size()-1);
-
-        return  res;
+        return this.value;
     }
 
     /**
@@ -76,5 +58,9 @@ public class Tag implements Serializable {
     public String toString()
     {
         return name + ": " + getValue();
+    }
+
+    public String[] getValues() {
+        return null;
     }
 }
