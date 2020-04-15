@@ -41,20 +41,10 @@ public class LoginController extends Controller implements Initializable {
         // if file doesnt exist create it
         if(!(data.exists() || data.isFile())){
             // add stock user
+            User stock = null;
             try {
                 data.createNewFile();
-                Album stockAlbum = new Album("stock");
-                String path = "/data/stock";
-                File photoFile;
-                for(int i = 0; i <= 5; i++){
-                    photoFile = new File(path+"/img"+Integer.toString(i)+".jpg");
-                    if(photoFile != null){
-                        Photo toAdd = new Photo(photoFile.getName(), photoFile);
-                        stockAlbum.addPhoto(toAdd);
-                    }
-                }
-                User stock = new User("stock");
-                stock.getAlbums().add(stockAlbum);
+                stock = new User("stock");
                 userList = new ArrayList<>();
                 userList.add(stock);
             } catch (IOException e) {
@@ -73,6 +63,7 @@ public class LoginController extends Controller implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //addPhotos(stock);
         }else {
             // read in the data from the file
             try {
@@ -88,6 +79,38 @@ public class LoginController extends Controller implements Initializable {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * add stock photos
+     */
+    public void addPhotos(User stock){
+        Album stockAlbum = new Album("stock album");
+        File path0 = new File("/data/stock/img0.jpg");
+        File path1 = new File("/data/stock/img1.jpg");
+        File path2 = new File("/data/stock/img2.jpg");
+        File path3 = new File("/data/stock/img3.jpg");
+        File path4 = new File("/data/stock/img4.jpg");
+        File path5 = new File("/data/stock/img5s.jpg");
+        stockAlbum.addPhoto(new Photo(path0.getName(), path0));
+        stockAlbum.addPhoto(new Photo(path1.getName(), path1));
+        stockAlbum.addPhoto(new Photo(path2.getName(), path2));
+        stockAlbum.addPhoto(new Photo(path3.getName(), path3));
+        stockAlbum.addPhoto(new Photo(path4.getName(), path4));
+        stockAlbum.addPhoto(new Photo(path5.getName(), path5));
+        stock.getAlbums().add(stockAlbum);
+
+        try {
+            FileOutputStream fos = new FileOutputStream(getDataPath());
+            ObjectOutputStream ous = new ObjectOutputStream(fos);
+            ous.writeObject(userList);
+            ous.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
