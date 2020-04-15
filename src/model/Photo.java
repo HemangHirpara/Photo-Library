@@ -26,10 +26,6 @@ public class Photo implements Serializable {
         return tagTypes;
     }
 
-    public void setTagTypes(HashMap<String, Boolean> tagTypes) {
-        this.tagTypes = tagTypes;
-    }
-
     /**
      * Constructor for photo object
      * @param caption Initial caption for photo
@@ -52,20 +48,12 @@ public class Photo implements Serializable {
         return dateTaken;
     }
 
-    public void setDateTaken(Time dateTaken) {
-        this.dateTaken = dateTaken;
-    }
-
     /**
      * getter -> return list of tags for photo
      * @return List<Tag> object containing all tags for photo
      */
     public List<Tag> getTags() {
         return this.tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
     }
 
     /**
@@ -91,19 +79,6 @@ public class Photo implements Serializable {
     public File getPhotoFile() {
         return photoFile;
     }
-
-    public void setPhotoFile(File photoFile) {
-        this.photoFile = photoFile;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
 
     /**
      * Add tag to tag list
