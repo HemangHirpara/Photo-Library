@@ -169,7 +169,7 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
         else
         {
-            if(tagtype_tf.getText().equals("") && tagtypes_cb.getSelectionModel().getSelectedItem() == null){
+            if(tagtypes_cb.getSelectionModel().getSelectedItem().equals("")){
                 status_ta.setText("invalid type");
                 resetFields();
             }
@@ -179,40 +179,29 @@ public class PhotoSystemController extends Controller implements Initializable{
             }
             else
             {
+                // get photo
                 Photo p = images_list.getSelectionModel().getSelectedItem();
-                //set tag type
-                String type = tagtypes_cb.getSelectionModel().getSelectedItem();
-                // if new type, add it to list
-                /*
-                if(tagtypes_cb.getSelectionModel().getSelectedItem() == null){
-                    type = tagtype_tf.getText();
-                    p.getTagTypes().put(tagtype_tf.getText(), isSingle_cb.isSelected());
-                    tagTypes = new ArrayList<>(p.getTagTypes().keySet());
-                    tagtypes_cb.setItems(FXCollections.observableList(tagTypes));
-                    updateData();
-                }
-                */
-                // new tag
-                Tag toAdd = new Tag(type, tagval_tf.getText());
-                // if its a single tag, and it already exists dont add it
-                for(Tag t : p.getTags()){
-                    String tName = t.getName();
-                    if(p.getTagTypes().get(tName)){
-                        status_ta.setText("can only be one");
-                        resetFields();
-                        return;
+                //make new tag
+                Tag newTag = new Tag(tagtypes_cb.getSelectionModel().getSelectedItem(), tagval_tf.getText());
+                // check if the tag is single val and already exists
+                if(p.getTagTypes().get(newTag.getName())){
+                    for(Tag t : p.getTags()){
+                        if(t.getName().equals(newTag.getName()))
+                        {
+                            status_ta.setText("Can only have one");
+                            resetFields();
+                            return;
+                        }
                     }
                 }
-
-                //addd it
-                if(p.addTag(toAdd))
-                {
+                if(p.addTag(newTag)){
                     status_ta.setText("tag added");
                     ObservableList<Tag> tagList = FXCollections.observableList(p.getTags());
                     tags_cb.setItems(tagList);
                     updateData();
                 }
-                else{
+                else
+                {
                     status_ta.setText("tag already exists");
                 }
                 tagtypes_cb.getSelectionModel().clearSelection();
