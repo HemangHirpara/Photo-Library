@@ -22,7 +22,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -319,10 +323,84 @@ public class UserSystemController extends Controller implements Initializable {
     public void delTagBtn(ActionEvent actionEvent) {
     }
 
-    public void searchTag(ActionEvent actionEvent) {
+    public void searchTag(ActionEvent event) {
+        String tagtype = (String) tagtype_cb.getSelectionModel().getSelectedItem();
+        String tagvalue = (String) tagval_cb.getSelectionModel().getSelectedItem();
+        if(tagtype == null || tagvalue == null)
+        {
+            status_ta.setText("Select tag type and value to search by");
+            return;
+        }
+        Tag temp = new Tag(tagtype, tagvalue, false);
+        List<Photo> resList = new ArrayList<Photo>();
+        for(Album a : albums) {
+            for(Photo p : a.getPhotos()) {
+                if(p.getTags().contains(temp)){
+                    resList.add(p);
+                }
+            }
+        }
+        Album resultAlbum = new Album("Search Results Album");
+        resultAlbum.setPhotos(resList);
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
+            Parent parent = (Parent) loader.load();
+            PhotoSystemController controller = loader.getController();
+            Scene photoScene = new Scene(parent);
+            Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            if(resultAlbum == null) {
+                status_ta.setText("Select an album to open");
+                return;
+            }
+            controller.initData(this.userList, curr_user, resultAlbum, stage);
+            stage.setScene(photoScene);
+            stage.centerOnScreen();
+            stage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    public void searchDate(ActionEvent actionEvent) {
+    public void searchDate(ActionEvent event) {
+        LocalDate localDate = from_date.getValue();
+        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        Date lowerLimit = Date.from(instant);
+        localDate = to_date.getValue();
+        instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        Date upperLimit = Date.from(instant);
+
+        if(lowerLimit.compareTo(upperLimit) > 0)
+        {
+            status_ta.setText("End date cannot come before start date");
+            return;
+        }
+        List<Photo> resList = new ArrayList<Photo>();
+        for(Album a : albums) {
+            for(Photo p : a.getPhotos()) {
+                if((p.getDateTaken().compareTo(lowerLimit) >= 0) && (p.getDateTaken().compareTo(upperLimit) <= 0)){
+                    resList.add(p);
+                }
+            }
+        }
+        Album resultAlbum = new Album("Search Results Album");
+        resultAlbum.setPhotos(resList);
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
+            Parent parent = (Parent) loader.load();
+            PhotoSystemController controller = loader.getController();
+            Scene photoScene = new Scene(parent);
+            Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            if(resultAlbum == null) {
+                status_ta.setText("Select an album to open");
+                return;
+            }
+            controller.initData(this.userList, curr_user, resultAlbum, stage);
+            stage.setScene(photoScene);
+            stage.centerOnScreen();
+            stage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 
