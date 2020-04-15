@@ -95,7 +95,6 @@ public class UserSystemController extends Controller implements Initializable {
 
         tagtype1_cb.setItems(FXCollections.observableList(tagTypes));
         tagval1_cb.setItems(FXCollections.observableList(tagValues));
-
         tagtype2_cb.setItems(FXCollections.observableList(tagTypes));
         tagval2_cb.setItems(FXCollections.observableList(tagValues));
     }
