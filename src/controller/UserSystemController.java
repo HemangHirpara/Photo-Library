@@ -13,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Album;
+import model.Photo;
+import model.Tag;
 import model.User;
 
 import java.io.FileNotFoundException;
@@ -20,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -31,12 +34,23 @@ import java.util.ResourceBundle;
 public class UserSystemController extends Controller implements Initializable {
     @FXML private TextField name_tf, numPhotos_tf, start_tf, end_tf;
     @FXML private Button create_btn,delete_btn, edit_btn, cancel_btn, open_btn;
+    @FXML private Button searchTag_btn, searchDate_btn, add_tag_btn, del_tag_btn;
+    @FXML private CheckBox and_cb, or_cb;
+    @FXML private ComboBox tagtype_cb, tagval_cb;
+    @FXML private DatePicker from_date, to_date;
     @FXML private TextArea status_ta;
     @FXML private ListView album_list;
 
     private User curr_user;
     private List<User> userList;
+    // all the albums the user has
     private List<Album> albums;
+    // all the photos the user has
+    private List<Photo> allPhotos;
+    // all the tag types
+    private List<String> tagTypes;
+    //all the tag values
+    private List<String> tagValues;
     private ObservableList<Album> observableAlbumList;
 
     @Override
@@ -61,6 +75,30 @@ public class UserSystemController extends Controller implements Initializable {
             album_list.getSelectionModel().selectFirst();
             displayDetails((Album) album_list.getSelectionModel().getSelectedItem());
         }
+
+        // fill allPhotos, tagTypes, tagValues
+        allPhotos = new ArrayList<>();
+        tagTypes = new ArrayList<>();
+        tagValues = new ArrayList<>();
+
+        for(Album a: albums){
+            for(Photo photo : a.getPhotos()){
+                if(!allPhotos.contains(photo))
+                    allPhotos.add(photo);
+                // get all tagTypes and values
+                for(Tag t : photo.getTags()){
+                    if(!tagTypes.contains(t.getName()))
+                        tagTypes.add(t.getName());
+                    //get all values
+                    for(String val : t.getValues())
+                        if(!tagValues.contains(val))
+                            tagValues.add(val);
+                }
+            }
+        }
+
+        tagtype_cb.setItems(FXCollections.observableList(tagTypes));
+        tagval_cb.setItems(FXCollections.observableList(tagValues));
     }
 
     /**
@@ -273,6 +311,18 @@ public class UserSystemController extends Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addTagBtn(ActionEvent actionEvent) {
+    }
+
+    public void delTagBtn(ActionEvent actionEvent) {
+    }
+
+    public void searchTag(ActionEvent actionEvent) {
+    }
+
+    public void searchDate(ActionEvent actionEvent) {
     }
 }
 

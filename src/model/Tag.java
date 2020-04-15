@@ -44,6 +44,8 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
+    public List<String> getValues() {return this.value;}
+
     public String getValue() {
         String res = "";
         if(value.size() == 1)
