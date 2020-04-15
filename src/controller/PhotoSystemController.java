@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -21,7 +22,6 @@ import model.Tag;
 import model.User;
 import photos15.PhotoThumbnail;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class PhotoSystemController extends Controller implements Initializable{
     @FXML private ComboBox<Tag> tags_cb;
     @FXML private ComboBox<String> tagtypes_cb;
     @FXML private TextField cap_tf, date_tf, tagtype_tf, tagval_tf, albname_tf, new_name;
-    @FXML private Button add_tag_btn, del_tag_btn,edit_cap_btn, cancel_btn1;
+    @FXML private Button add_tag_btn, del_tag_btn,edit_cap_btn, cancel_btn1, new_tag_btn;
     @FXML private Button add_btn, remove_btn, move_btn, copy_btn, cancel_btn, create_alb, cancel3_btn;
     @FXML private Label move_lbl;
     @FXML private ImageView img;
@@ -91,7 +91,7 @@ public class PhotoSystemController extends Controller implements Initializable{
     }
 
     /**
-     * Display Tag deets
+     * Display Tag details
      * @param actionEvent
      */
     public void tagSelected(ActionEvent actionEvent) {
@@ -105,6 +105,14 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    /**
+     * Display tag type in tag type field
+     * @param actionEvent
+     */
+    public void displayTagType(ActionEvent actionEvent) {
+        if(tagtypes_cb.getItems().size() != 0)
+            tagtype_tf.setText(tagtypes_cb.getSelectionModel().getSelectedItem());
+    }
 
     /**
      * Delete tag button functionality, allow a tag to be deleted from an image
@@ -142,13 +150,22 @@ public class PhotoSystemController extends Controller implements Initializable{
             del_tag_btn.setVisible(false);
             edit_cap_btn.setVisible(false);
             cancel_btn1.setVisible(true);
-            tagtype_tf.setEditable(true);
             tagtypes_cb.setDisable(false);
-            tagtype_tf.setPromptText("Tag Type");
             tagval_tf.setEditable(true);
             tagval_tf.requestFocus();
             add_tag_btn.setText("Confirm");
-            isSingle_cb.setDisable(false);
+            new_tag_btn.setVisible(false);
+            tagtype_tf.setDisable(true);
+            images_list.setDisable(true);
+            if(tagtypes_cb.getItems().size() == 0){
+                status_ta.setText("No tag types, create new tag");
+                resetFields();
+                return;
+            }
+            else{
+                tagtypes_cb.getSelectionModel().selectFirst();
+                tagtype_tf.setText(tagtypes_cb.getSelectionModel().getSelectedItem());
+            }
         }
         else
         {
@@ -166,6 +183,7 @@ public class PhotoSystemController extends Controller implements Initializable{
                 //set tag type
                 String type = tagtypes_cb.getSelectionModel().getSelectedItem();
                 // if new type, add it to list
+                /*
                 if(tagtypes_cb.getSelectionModel().getSelectedItem() == null){
                     type = tagtype_tf.getText();
                     p.getTagTypes().put(tagtype_tf.getText(), isSingle_cb.isSelected());
@@ -173,7 +191,7 @@ public class PhotoSystemController extends Controller implements Initializable{
                     tagtypes_cb.setItems(FXCollections.observableList(tagTypes));
                     updateData();
                 }
-
+                */
                 // new tag
                 Tag toAdd = new Tag(type, tagval_tf.getText());
                 // if its a single tag, and it already exists dont add it
@@ -203,6 +221,39 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
+    public void newTagBtnAction(ActionEvent actionEvent) {
+        if(new_tag_btn.getText().equals("New Tag")){
+            cap_tf.setDisable(true);
+            date_tf.setDisable(true);
+            albname_tf.setDisable(true);
+            tags_cb.setDisable(true);
+            add_tag_btn.setVisible(false);
+            del_tag_btn.setVisible(false);
+            edit_cap_btn.setVisible(false);
+            cancel_btn1.setVisible(true);
+            tagtype_tf.setEditable(true);
+            tagtype_tf.requestFocus();
+            tagtypes_cb.setDisable(true);
+            tagtype_tf.setPromptText("Tag Type");
+            tagval_tf.setDisable(true);
+            new_tag_btn.setText("Confirm");
+            isSingle_cb.setVisible(true);
+            isSingle_cb.setDisable(false);
+            images_list.setDisable(true);
+        }
+        else {
+            //create new tag and add to list
+            Photo p = images_list.getSelectionModel().getSelectedItem();
+            p.getTagTypes().put(tagtype_tf.getText(), isSingle_cb.isSelected());
+            tagTypes = new ArrayList<>(p.getTagTypes().keySet());
+            tagtypes_cb.setItems(FXCollections.observableList(tagTypes));
+            updateData();
+            tagval_tf.setDisable(false);
+            add_tag_btn.setVisible(true);
+            new_tag_btn.setText("New Tag");
+            resetFields();
+        }
+    }
 
 
     /**
@@ -347,8 +398,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         tagval_tf.setText("");
         tagtype_tf.setText("");
         cancel_btn1.setVisible(false);
-        isSingle_cb.setDisable(true);
+        isSingle_cb.setVisible(false);
         tagtypes_cb.setDisable(true);
+        new_tag_btn.setVisible(true);
+        new_tag_btn.setText("New Tag");
     }
 
     /**
