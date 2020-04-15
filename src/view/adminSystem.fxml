@@ -26,7 +26,7 @@
       </Label>
       <Button fx:id="logout_btn" layoutX="246.0" layoutY="266.0" mnemonicParsing="false" onAction="#logoutBtnAction" text="Logout" />
       <Button fx:id="quit_btn" layoutX="188.0" layoutY="266.0" mnemonicParsing="false" onAction="#quitBtnAction" text="Quit" />
-      <TextArea id="status_ta" fx:id="status_ta" disable="true" layoutX="14.0" layoutY="260.0" prefHeight="25.0" prefWidth="160.0" text="Status Box" wrapText="true" />
+      <TextField fx:id="status_ta" layoutX="24.0" layoutY="345.0" prefHeight="25.0" prefWidth="179.0"  editable="false" promptText="status box" />
       <ListView id="users" fx:id="users_list" layoutX="14.0" layoutY="50.0" prefHeight="200.0" prefWidth="149.0" />
    </children>
 </AnchorPane>

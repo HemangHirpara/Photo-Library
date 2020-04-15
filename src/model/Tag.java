@@ -60,7 +60,4 @@ public class Tag implements Serializable {
         return name + ": " + getValue();
     }
 
-    public String[] getValues() {
-        return null;
-    }
 }

@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Album;
+import model.Photo;
 import model.User;
 
 import java.io.*;
@@ -41,7 +43,18 @@ public class LoginController extends Controller implements Initializable {
             // add stock user
             try {
                 data.createNewFile();
+                Album stockAlbum = new Album("stock");
+                String path = "/data/stock";
+                File photoFile;
+                for(int i = 0; i <= 5; i++){
+                    photoFile = new File(path+"/img"+Integer.toString(i)+".jpg");
+                    if(photoFile != null){
+                        Photo toAdd = new Photo(photoFile.getName(), photoFile);
+                        stockAlbum.addPhoto(toAdd);
+                    }
+                }
                 User stock = new User("stock");
+                stock.getAlbums().add(stockAlbum);
                 userList = new ArrayList<>();
                 userList.add(stock);
             } catch (IOException e) {

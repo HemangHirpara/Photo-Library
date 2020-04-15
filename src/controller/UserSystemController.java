@@ -22,8 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -36,12 +34,11 @@ import java.util.*;
 public class UserSystemController extends Controller implements Initializable {
     @FXML private TextField name_tf, numPhotos_tf, start_tf, end_tf;
     @FXML private Button create_btn,delete_btn, edit_btn, cancel_btn, open_btn;
-    @FXML private Button searchTag_btn, searchDate_btn, add_tag_btn, del_tag_btn;
-    @FXML private CheckBox and_cb, or_cb;
-    @FXML private ComboBox tagtype_cb, tagval_cb;
+    @FXML private Button searchDate_btn, search_btn, searchAnd_btn, searchOr_btn;
+    @FXML private ComboBox<String> tagtype1_cb,tagval1_cb,tagtype2_cb, tagval2_cb;
     @FXML private DatePicker from_date, to_date;
-    @FXML private TextArea status_ta;
-    @FXML private ListView album_list;
+    @FXML private TextField status_ta;
+    @FXML private ListView album_list, tagsList;
 
     private User curr_user;
     private List<User> userList;
@@ -99,8 +96,187 @@ public class UserSystemController extends Controller implements Initializable {
             }
         }
 
-        tagtype_cb.setItems(FXCollections.observableList(tagTypes));
-        tagval_cb.setItems(FXCollections.observableList(tagValues));
+        tagtype1_cb.setItems(FXCollections.observableList(tagTypes));
+        tagval1_cb.setItems(FXCollections.observableList(tagValues));
+
+        tagtype2_cb.setItems(FXCollections.observableList(tagTypes));
+        tagval2_cb.setItems(FXCollections.observableList(tagValues));
+    }
+
+    public void searchSingle(ActionEvent event) {
+        if(search_btn.getText().equals("Search by Single Tag")){
+            tagtype1_cb.setDisable(false);
+            tagval1_cb.setDisable(false);
+            search_btn.setText("Go");
+            searchAnd_btn.setDisable(true);
+            searchOr_btn.setDisable(true);
+        }
+        else {
+            if(tagtype1_cb.getSelectionModel().getSelectedItem() == null|| tagval1_cb.getSelectionModel().getSelectedItem() == null)
+            {
+                status_ta.setText("missing value or type");
+                resetSearch();
+                return;
+            }
+            Tag one = new Tag(tagtype1_cb.getSelectionModel().getSelectedItem(), tagval1_cb.getSelectionModel().getSelectedItem());
+            List<Photo> result = new ArrayList<>();
+            for(Photo p : allPhotos){
+                for(Tag t : p.getTags()){
+                    if(t.equals(one)){
+                        result.add(p);
+                    }
+                }
+            }
+            sendResults(event, result);
+            resetSearch();
+        }
+    }
+
+
+
+    public void searchAnd(ActionEvent event) {
+        if(searchAnd_btn.getText().equals("Search by Two Tags (AND)")){
+            tagtype1_cb.setDisable(false);
+            tagval1_cb.setDisable(false);
+            tagtype2_cb.setDisable(false);
+            tagval2_cb.setDisable(false);
+            searchAnd_btn.setText("Go");
+            search_btn.setDisable(true);
+            searchOr_btn.setDisable(true);
+        }
+        else
+        {
+            if(tagtype1_cb.getSelectionModel().getSelectedItem() == null|| tagval1_cb.getSelectionModel().getSelectedItem() == null || tagtype2_cb.getSelectionModel().getSelectedItem() == null|| tagval2_cb.getSelectionModel().getSelectedItem() == null)
+            {
+                status_ta.setText("missing value or type");
+                resetSearch();
+            }
+            Tag one = new Tag(tagtype1_cb.getSelectionModel().getSelectedItem(), tagval1_cb.getSelectionModel().getSelectedItem());
+            Tag two = new Tag(tagtype2_cb.getSelectionModel().getSelectedItem(), tagval2_cb.getSelectionModel().getSelectedItem());
+            if(one.equals(two)){
+                status_ta.setText("tag 1 and 2 are same");
+                resetSearch();
+                return;
+            }
+            List<Photo> result = new ArrayList<>();
+            List<Tag> temp;
+            for(Photo p : allPhotos){
+               temp = p.getTags();
+               if(temp.contains(one) && temp.contains(two))
+                   result.add(p);
+            }
+            sendResults(event, result);
+            resetSearch();
+        }
+    }
+
+    public void searchOr(ActionEvent event) {
+        if(searchOr_btn.getText().equals("Search by Two Tags (OR)")){
+            tagtype1_cb.setDisable(false);
+            tagval1_cb.setDisable(false);
+            tagtype2_cb.setDisable(false);
+            tagval2_cb.setDisable(false);
+            searchOr_btn.setText("Go");
+            searchAnd_btn.setDisable(true);
+            search_btn.setDisable(true);
+        }
+        else
+        {
+            if(tagtype1_cb.getSelectionModel().getSelectedItem() == null|| tagval1_cb.getSelectionModel().getSelectedItem() == null || tagtype2_cb.getSelectionModel().getSelectedItem() == null|| tagval2_cb.getSelectionModel().getSelectedItem() == null)
+            {
+                status_ta.setText("missing value or type");
+                resetSearch();
+            }
+            Tag one = new Tag(tagtype1_cb.getSelectionModel().getSelectedItem(), tagval1_cb.getSelectionModel().getSelectedItem());
+            Tag two = new Tag(tagtype2_cb.getSelectionModel().getSelectedItem(), tagval2_cb.getSelectionModel().getSelectedItem());
+            if(one.equals(two)){
+                status_ta.setText("tag 1 and 2 are same");
+                resetSearch();
+                return;
+            }
+            List<Photo> result = new ArrayList<>();
+            List<Tag> temp;
+            for(Photo p : allPhotos){
+                temp = p.getTags();
+                if(temp.contains(one) || temp.contains(two))
+                    result.add(p);
+            }
+            sendResults(event, result);
+            resetSearch();
+        }
+    }
+
+    public void resetSearch(){
+        tagtype1_cb.setDisable(true);
+        tagval1_cb.setDisable(true);
+        tagtype2_cb.setDisable(true);
+        tagval2_cb.setDisable(true);
+        search_btn.setDisable(false);
+        search_btn.setText("Search by Single Tag");
+        searchOr_btn.setDisable(false);
+        searchOr_btn.setText("Search by Two Tags (OR)");
+        searchAnd_btn.setDisable(false);
+        searchAnd_btn.setText("Search by Two Tags (AND)");
+    }
+
+    public void searchDate(ActionEvent event) {
+        if(searchDate_btn.getText().equals("Search by Date")){
+            searchDate_btn.setText("Go");
+            from_date.setDisable(false);
+            to_date.setDisable(false);
+        }
+        else
+        {
+            searchDate_btn.setText("Search by Date");
+            from_date.setDisable(true);
+            to_date.setDisable(true);
+            if(from_date.getValue() == null || to_date.getValue() == null)
+            {
+                status_ta.setText("missing date range");
+                return;
+            }
+            Date lowerLimit = Date.from(from_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date upperLimit = Date.from(to_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            if(lowerLimit.compareTo(upperLimit) > 0)
+            {
+                status_ta.setText("end cannot come before the beginning");
+                return;
+            }
+
+            // make result
+            List<Photo> result = new ArrayList<>();
+            for(Photo p : allPhotos){
+                System.out.println(p.getDateTaken().toString());
+                if(p.getDateTaken().compareTo(lowerLimit) >= 0 && p.getDateTaken().compareTo(upperLimit) <= 0){
+                    result.add(p);
+                }
+            }
+            sendResults(event, result);
+        }
+
+    }
+
+    private void sendResults(ActionEvent event, List<Photo> result) {
+        if(result.size() == 0)
+            status_ta.setText("No photos found");
+        else {
+            Album resultAlbum = new Album("Search Results");
+            resultAlbum.setPhotos(result);
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
+                Parent parent = (Parent) loader.load();
+                PhotoSystemController controller = loader.getController();
+                Scene photoScene = new Scene(parent);
+                Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                controller.initData(this.userList, curr_user, resultAlbum, stage);
+                stage.setScene(photoScene);
+                stage.centerOnScreen();
+                stage.show();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -313,72 +489,6 @@ public class UserSystemController extends Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void addTagBtn(ActionEvent actionEvent) {
-    }
-
-    public void delTagBtn(ActionEvent actionEvent) {
-    }
-
-    public void searchTag(ActionEvent actionEvent) {
-    }
-
-    public void searchDate(ActionEvent event) {
-        if(searchDate_btn.getText().equals("Search by Date")){
-            searchDate_btn.setText("Go");
-            from_date.setDisable(false);
-            to_date.setDisable(false);
-        }
-        else
-        {
-            searchDate_btn.setText("Search by Date");
-            from_date.setDisable(true);
-            to_date.setDisable(true);
-            if(from_date.getValue() == null || to_date.getValue() == null)
-            {
-                status_ta.setText("missing date range");
-                return;
-            }
-            Date lowerLimit = Date.from(from_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Date upperLimit = Date.from(to_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-            if(lowerLimit.compareTo(upperLimit) > 0)
-            {
-                status_ta.setText("end cannot come before the beginning");
-                return;
-            }
-
-            // make result
-            List<Photo> result = new ArrayList<>();
-            for(Photo p : allPhotos){
-                System.out.println(p.getDateTaken().toString());
-                if(p.getDateTaken().compareTo(lowerLimit) >= 0 && p.getDateTaken().compareTo(upperLimit) <= 0){
-                    result.add(p);
-                }
-            }
-
-            if(result.size() == 0)
-                status_ta.setText("No photos found");
-            else {
-                Album resultAlbum = new Album("Search Results");
-                resultAlbum.setPhotos(result);
-                try{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
-                    Parent parent = (Parent) loader.load();
-                    PhotoSystemController controller = loader.getController();
-                    Scene photoScene = new Scene(parent);
-                    Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                    controller.initData(this.userList, curr_user, resultAlbum, stage);
-                    stage.setScene(photoScene);
-                    stage.centerOnScreen();
-                    stage.show();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 }
 
