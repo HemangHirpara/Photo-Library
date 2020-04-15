@@ -44,7 +44,18 @@ public class LoginController extends Controller implements Initializable {
             User stock = null;
             try {
                 data.createNewFile();
+                Album sAlbum = new Album("Stock Album");
+                String path = "data/stock/";
+                File photo;
+                for(int i = 0; i <= 5; i++){
+                    photo = new File(path + "img" + Integer.toString(i) + ".jpg");
+                    if(photo != null){
+                        Photo toAdd = new Photo(photo.getName(), photo);
+                        sAlbum.addPhoto(toAdd);
+                    }
+                }
                 stock = new User("stock");
+                stock.getAlbums().add(sAlbum);
                 userList = new ArrayList<>();
                 userList.add(stock);
             } catch (IOException e) {
@@ -63,7 +74,6 @@ public class LoginController extends Controller implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            addPhotos(stock);
         }else {
             // read in the data from the file
             try {
@@ -82,25 +92,6 @@ public class LoginController extends Controller implements Initializable {
         }
     }
 
-    /**
-     * add stock photos
-     */
-    public void addPhotos(User stock){
-        Album stockAlbum = new Album("stock album");
-        File path0 = new File("data/stock/img0.jpg");
-        File path1 = new File("data/stock/img1.jpg");
-        File path2 = new File("data/stock/img2.jpg");
-        File path3 = new File("data/stock/img3.jpg");
-        File path4 = new File("data/stock/img4.jpg");
-        File path5 = new File("data/stock/img5.jpg");
-        stockAlbum.addPhoto(new Photo(path0.getName(), path0));
-        stockAlbum.addPhoto(new Photo(path1.getName(), path1));
-        stockAlbum.addPhoto(new Photo(path2.getName(), path2));
-        stockAlbum.addPhoto(new Photo(path3.getName(), path3));
-        stockAlbum.addPhoto(new Photo(path4.getName(), path4));
-        stockAlbum.addPhoto(new Photo(path5.getName(), path5));
-        stock.getAlbums().add(stockAlbum);
-    }
 
     /**
      * handles which scene to goto depending on the username
