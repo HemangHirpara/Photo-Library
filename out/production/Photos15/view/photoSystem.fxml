@@ -34,9 +34,9 @@
             <TextField fx:id="cap_tf" editable="false" layoutX="109.0" layoutY="250.0" prefHeight="27.0" prefWidth="150.0" />
             <Label layoutX="14.0" layoutY="218.0" prefHeight="17.0" prefWidth="76.0" text="Date/Time:" />
             <TextField fx:id="date_tf" editable="false" layoutX="109.0" layoutY="215.0" prefHeight="27.0" prefWidth="150.0" />
-            <Label layoutX="16.0" layoutY="108.0" prefHeight="17.0" prefWidth="61.0" text="Tag Type:" />
+            <Label layoutX="16.0" layoutY="108.0" prefHeight="17.0" prefWidth="61.0" text="TagType:" />
             <TextField fx:id="tagtype_tf" editable="false" layoutX="109.0" layoutY="105.0" prefHeight="27.0" prefWidth="150.0" />
-            <Label layoutX="11.0" layoutY="145.0" prefHeight="17.0" prefWidth="62.0" text="Tag Value:" />
+            <Label layoutX="21.0" layoutY="143.0" prefHeight="17.0" prefWidth="62.0" text="Tag Value:" />
             <TextField fx:id="tagval_tf" editable="false" layoutX="109.0" layoutY="140.0" prefHeight="27.0" prefWidth="150.0" />
             <TextField fx:id="albname_tf" editable="false" layoutX="109.0" layoutY="178.0" prefHeight="27.0" prefWidth="150.0" />
             <Label layoutX="5.0" layoutY="181.0" prefHeight="17.0" prefWidth="77.0" text="Album Name:" />
@@ -48,8 +48,8 @@
             <VBox layoutX="269.0" layoutY="42.0" prefHeight="269.0" prefWidth="89.0" spacing="19.0">
                <children>
                   <Button fx:id="add_tag_btn" mnemonicParsing="false" onAction="#addTagBtnAction" text="Add Tag" />
-                  <Button fx:id="new_tag_btn" mnemonicParsing="false" onAction="#newTagBtnAction" prefHeight="27.0" prefWidth="69.0" text="New Tag" />
-                  <CheckBox fx:id="isSingle_cb" disable="true" mnemonicParsing="false" text="Single Value" visible="false" />
+                  <Button fx:id="new_tag_btn" mnemonicParsing="false" onAction="#newTagBtnAction" text="New Tag" />
+                  <CheckBox fx:id="isSingle_cb" disable="true" mnemonicParsing="false" text="Single Value" />
                   <Button fx:id="del_tag_btn" mnemonicParsing="false" onAction="#deleteTagBtnAction" text="Delete Tag" />
                   <Button fx:id="edit_cap_btn" mnemonicParsing="false" onAction="#editCaptionBtnAction" text="Edit Caption" />
                   <Button fx:id="cancel_btn1" mnemonicParsing="false" onAction="#cancelBtnAction" text="Cancel" visible="false" />
@@ -59,7 +59,7 @@
                </padding>
             </VBox>
             <Label layoutX="14.0" layoutY="77.0" text="Tag Types:" />
-            <ComboBox fx:id="tagtypes_cb" disable="true" layoutX="107.0" layoutY="75.0" onAction="#displayTagType" prefHeight="25.0" prefWidth="150.0" />
+            <ComboBox fx:id="tagtypes_cb" disable="true" layoutX="107.0" layoutY="75.0" onAction="#tagSelected" prefHeight="25.0" prefWidth="150.0" />
             <Button fx:id="create_alb" layoutX="8.0" layoutY="292.0" mnemonicParsing="false" onAction="#createAlbum" text="Create Album" visible="false" />
             <TextField fx:id="new_name" layoutX="108.0" layoutY="292.0" promptText="new_album_name" visible="false" />
             <Button fx:id="cancel3_btn" layoutX="278.0" layoutY="292.0" mnemonicParsing="false" onAction="#cancelNewAlbum" prefHeight="14.0" prefWidth="52.0" text="Cancel" visible="false" />
