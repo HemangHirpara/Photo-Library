@@ -51,6 +51,11 @@ public class PhotoThumbnail extends ListCell<Photo> {
         setGraphic(aPane);
     }
 
+    /**
+     * Override updateItem method to display photo thumbnail in list view cells
+     * @param photo Photo object to be displayed
+     * @param empty boolean to check if cell is empty
+     */
     @Override
     public void updateItem(Photo photo, boolean empty){
         super.updateItem(photo, empty);

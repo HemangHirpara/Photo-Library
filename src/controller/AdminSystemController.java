@@ -2,7 +2,6 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.User;
@@ -32,7 +31,7 @@ public class AdminSystemController extends Controller{
 
     /**
      * Initialize admin subsystem with user list
-     * @param userList
+     * @param userList list of users allowed on photo system
      */
     public void initData(List<User> userList){
         this.userList = userList;
@@ -44,9 +43,8 @@ public class AdminSystemController extends Controller{
 
     /**
      * Create user button functionality
-     * @param actionEvent
      */
-    public void createBtnAction(ActionEvent actionEvent) {
+    public void createBtnAction() {
         status_ta.setText("Creating user");
         if(createUser_btn.getText().equals("Create User")){
             users_list.setDisable(true);
@@ -80,9 +78,8 @@ public class AdminSystemController extends Controller{
 
     /**
      * Delete user button functionality
-     * @param actionEvent
      */
-    public void deleteBtnAction(ActionEvent actionEvent) {
+    public void deleteBtnAction() {
         status_ta.setText("Deleting selected user");
         if(deleteUser_btn.getText().equals("Delete User")){
             if(users_list.getSelectionModel().getSelectedItem() == null){
@@ -114,8 +111,6 @@ public class AdminSystemController extends Controller{
             ous.writeObject(userList);
             ous.close();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,19 +132,17 @@ public class AdminSystemController extends Controller{
 
     /**
      * Cancel button functionality
-     * @param actionEvent
      */
-    public void cancelBtnAction(ActionEvent actionEvent) {
+    public void cancelBtnAction() {
         status_ta.setText("Cancelled Action");
         resetFields();
     }
 
     /**
      * Quit application button, updates data.dat file on quit
-     * @param event
      */
     @FXML
-    public void quitBtnAction(ActionEvent event) {
+    public void quitBtnAction() {
         updateData();
         System.exit(1);
     }

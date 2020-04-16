@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
 public class LoginController extends Controller implements Initializable {
 
     @FXML private TextField username_tf;
-
     List<User> userList;
 
     /**
@@ -41,7 +40,7 @@ public class LoginController extends Controller implements Initializable {
         // if file doesnt exist create it
         if(!(data.exists() || data.isFile())){
             // add stock user
-            User stock = null;
+            User stock;
             try {
                 data.createNewFile();
                 Album sAlbum = new Album("Stock Album");
@@ -69,8 +68,6 @@ public class LoginController extends Controller implements Initializable {
                 ous.writeObject(userList);
                 ous.close();
                 fos.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,11 +79,7 @@ public class LoginController extends Controller implements Initializable {
                 userList = (ArrayList<User>) ois.readObject();
                 ois.close();
                 fis.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -105,8 +98,7 @@ public class LoginController extends Controller implements Initializable {
         Parent parent;
 
         User currUser = null;
-        for(User u: userList)
-        {
+        for(User u: userList) {
             if(usr.equals(u.getUsername()))
                 currUser = u;
         }
@@ -118,7 +110,7 @@ public class LoginController extends Controller implements Initializable {
 
         if(usr.equals("admin")){
             loader = new FXMLLoader(getClass().getResource("/view/adminSystem.fxml"));
-            parent = (Parent) loader.load();
+            parent = loader.load();
             AdminSystemController controller = loader.getController();
             Scene adminScene = new Scene(parent);
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -126,21 +118,17 @@ public class LoginController extends Controller implements Initializable {
             stage.setScene(adminScene);
             stage.centerOnScreen();
             stage.show();
-            return;
         }
-        else
-
-        loader = new FXMLLoader(getClass().getResource("/view/userSystem.fxml"));
-        parent = (Parent) loader.load();
-        UserSystemController controller = loader.getController();
-        Scene userScene = new Scene(parent);
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        controller.initData(this.userList, currUser);
-        stage.setScene(userScene);
-        stage.centerOnScreen();
-        stage.show();
-        return;
-
-
+        else {
+            loader = new FXMLLoader(getClass().getResource("/view/userSystem.fxml"));
+            parent = loader.load();
+            UserSystemController controller = loader.getController();
+            Scene userScene = new Scene(parent);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            controller.initData(this.userList, currUser);
+            stage.setScene(userScene);
+            stage.centerOnScreen();
+            stage.show();
+        }
     }
 }

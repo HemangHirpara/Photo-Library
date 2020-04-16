@@ -25,12 +25,18 @@ public class Tag implements Serializable {
         this.value = val;
     }
 
-
+    /**
+     * getter -> return name of tag
+     * @return String tag name
+     */
     public String getName() {
         return name;
     }
 
-
+    /**
+     * getter -> return value of tag
+     * @return String tag value
+     */
     public String getValue() {
         return this.value;
     }

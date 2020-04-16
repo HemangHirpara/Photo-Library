@@ -96,7 +96,7 @@ public class Album implements Serializable {
 
     /**
      * setter -> set album name
-     * @param name
+     * @param name Sting album name to set
      */
     public void setName(String name) {
         this.name = name;
@@ -104,7 +104,7 @@ public class Album implements Serializable {
 
     /**
      * setter -> set photo list for album
-     * @param photos
+     * @param photos List<Photo> photos to set
      */
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
@@ -130,7 +130,7 @@ public class Album implements Serializable {
 
     /**
      * setter -> set start date
-     * @param start
+     * @param start Date start to set
      */
     public void setStart(Date start) {
         this.start = start;
@@ -156,7 +156,7 @@ public class Album implements Serializable {
 
     /**
      * setter -> set end date
-     * @param end
+     * @param end Date end date to set
      */
     public void setEnd(Date end) {
         this.end = end;

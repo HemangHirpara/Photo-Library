@@ -44,6 +44,10 @@ public class User implements Serializable {
      */
     public String getUsername() {return this.username;}
 
+    /**
+     * toString method override to display username
+     * @return
+     */
     @Override
     public String toString() {return this.username;}
 

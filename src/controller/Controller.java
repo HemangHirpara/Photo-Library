@@ -22,12 +22,12 @@ public abstract class Controller {
 
     /**
      * Handles functionality when logout button is pressed. Saves all data in application
-     * @param event
-     * @throws IOException
+     * @param event onclick event to logout user
+     * @throws IOException Exception to catch when logging out of system
      */
     public void logoutBtnAction(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
-        Parent parent = (Parent) loader.load();
+        Parent parent = loader.load();
         Scene loginScene = new Scene(parent);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(loginScene);

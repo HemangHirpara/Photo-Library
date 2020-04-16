@@ -15,7 +15,6 @@ import model.Album;
 import model.Photo;
 import model.User;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -44,7 +43,9 @@ public class SlideshowController extends Controller implements Initializable {
 
     /**
      * Initialize Slideshow album to show
-     * @param userList
+     * @param userList list of users allowed on photo system
+     * @param user current user logged in
+     * @param album album to display in slideshow
      */
     public void initData(List<User> userList, User user, Album album){
         this.userList = userList;
@@ -58,21 +59,20 @@ public class SlideshowController extends Controller implements Initializable {
 
     /**
      * Quit application button functionality
-     * @param event
      */
-    public void quitBtnAction(ActionEvent event) {
+    public void quitBtnAction() {
         updateData();
         System.exit(1);
     }
 
     /**
      * Back button functionality to return to previous window
-     * @param event
+     * @param event onclick event to return to previous user view
      */
     public void backBtnAction(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
-            Parent parent = (Parent) loader.load();
+            Parent parent = loader.load();
             PhotoSystemController controller = loader.getController();
             Scene photoScene = new Scene(parent);
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -87,28 +87,24 @@ public class SlideshowController extends Controller implements Initializable {
 
     /**
      * Next button functionality to move slideshow to next image in album
-     * @param actionEvent
      */
-    public void nextImage(ActionEvent actionEvent) {
+    public void nextImage() {
         if(counter+1<image_list.size()) {
             counter++;
             img_slide.setImage(new Image(image_list.get(counter).getPhotoFile().toURI().toString(), 340, 340, true, true));
             cap_lbl.setText(image_list.get(counter).getCaption());
         }
-        return;
     }
 
     /**
      * Previous button functionality to move slideshow to previous image in album
-     * @param actionEvent
      */
-    public void prevImage(ActionEvent actionEvent) {
+    public void prevImage() {
         if(counter-1 >= 0){
             counter--;
             img_slide.setImage(new Image(image_list.get(counter).getPhotoFile().toURI().toString(),340,340,true,true));
             cap_lbl.setText(image_list.get(counter).getCaption());
         }
-        return;
     }
 
     /**
@@ -121,8 +117,6 @@ public class SlideshowController extends Controller implements Initializable {
             ous.writeObject(userList);
             ous.close();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

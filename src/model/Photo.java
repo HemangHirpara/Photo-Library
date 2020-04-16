@@ -2,7 +2,6 @@ package model;
 
 import java.io.File;
 import java.io.Serializable;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +34,7 @@ public class Photo implements Serializable {
         this.path = photoFile.getPath();
         this.caption = caption.equals("") ? "N/A" : caption;
         this.dateTaken = new Date(photoFile.lastModified());
-        this.tags = new ArrayList<Tag>();
+        this.tags = new ArrayList<>();
         this.photoFile = photoFile;
         tagTypes = new HashMap<>();
     }
@@ -66,7 +65,7 @@ public class Photo implements Serializable {
 
     /**
      * setter -> set caption for photo
-     * @param caption
+     * @param caption String caption to set for photo
      */
     public void setCaption(String caption) {
         this.caption = caption;
@@ -86,7 +85,7 @@ public class Photo implements Serializable {
      * @return true if tag was added, false if tag cannot be added
      */
     public boolean addTag(Tag tag){
-        if (tags == null) tags = new ArrayList<Tag>();
+        if (tags == null) tags = new ArrayList<>();
         for (Tag t : tags){
             if (t.equals(tag)){
                 return false;

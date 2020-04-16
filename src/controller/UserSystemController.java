@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Album;
 import model.Photo;
@@ -99,6 +98,10 @@ public class UserSystemController extends Controller implements Initializable {
         tagval2_cb.setItems(FXCollections.observableList(tagValues));
     }
 
+    /**
+     * Search albums for photos based on single tag name-value pair
+     * @param event onclick event to open photo view with results
+     */
     public void searchSingle(ActionEvent event) {
         if(search_btn.getText().equals("Search by Single Tag")){
             tagtype1_cb.setDisable(false);
@@ -128,8 +131,10 @@ public class UserSystemController extends Controller implements Initializable {
         }
     }
 
-
-
+    /**
+     * Search albums for photos based on conjunction of two tag name-value pair
+     * @param event onclick event to open photo view with results
+     */
     public void searchAnd(ActionEvent event) {
         if(searchAnd_btn.getText().equals("Search by Two Tags (AND)")){
             tagtype1_cb.setDisable(false);
@@ -146,6 +151,7 @@ public class UserSystemController extends Controller implements Initializable {
             {
                 status_ta.setText("missing value or type");
                 resetSearch();
+                return;
             }
             Tag one = new Tag(tagtype1_cb.getSelectionModel().getSelectedItem(), tagval1_cb.getSelectionModel().getSelectedItem());
             Tag two = new Tag(tagtype2_cb.getSelectionModel().getSelectedItem(), tagval2_cb.getSelectionModel().getSelectedItem());
@@ -166,6 +172,10 @@ public class UserSystemController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Search albums for photos based on disjunction of two tag name-value pair
+     * @param event onclick event to open photo view with results
+     */
     public void searchOr(ActionEvent event) {
         if(searchOr_btn.getText().equals("Search by Two Tags (OR)")){
             tagtype1_cb.setDisable(false);
@@ -182,6 +192,7 @@ public class UserSystemController extends Controller implements Initializable {
             {
                 status_ta.setText("missing value or type");
                 resetSearch();
+                return;
             }
             Tag one = new Tag(tagtype1_cb.getSelectionModel().getSelectedItem(), tagval1_cb.getSelectionModel().getSelectedItem());
             Tag two = new Tag(tagtype2_cb.getSelectionModel().getSelectedItem(), tagval2_cb.getSelectionModel().getSelectedItem());
@@ -202,6 +213,9 @@ public class UserSystemController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Reset search fields and buttons to initial values
+     */
     public void resetSearch(){
         tagtype1_cb.setDisable(true);
         tagval1_cb.setDisable(true);
@@ -215,6 +229,10 @@ public class UserSystemController extends Controller implements Initializable {
         searchAnd_btn.setText("Search by Two Tags (AND)");
     }
 
+    /**
+     * Search albums for photos based on start and end dates of photos
+     * @param event onclick event to open photo view with results
+     */
     public void searchDate(ActionEvent event) {
         if(searchDate_btn.getText().equals("Search by Date")){
             searchDate_btn.setText("Go");
@@ -226,16 +244,14 @@ public class UserSystemController extends Controller implements Initializable {
             searchDate_btn.setText("Search by Date");
             from_date.setDisable(true);
             to_date.setDisable(true);
-            if(from_date.getValue() == null || to_date.getValue() == null)
-            {
+            if(from_date.getValue() == null || to_date.getValue() == null) {
                 status_ta.setText("missing date range");
                 return;
             }
             Date lowerLimit = Date.from(from_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date upperLimit = Date.from(to_date.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            if(lowerLimit.compareTo(upperLimit) > 0)
-            {
+            if(lowerLimit.compareTo(upperLimit) > 0) {
                 status_ta.setText("end cannot come before the beginning");
                 return;
             }
@@ -243,7 +259,6 @@ public class UserSystemController extends Controller implements Initializable {
             // make result
             List<Photo> result = new ArrayList<>();
             for(Photo p : allPhotos){
-                System.out.println(p.getDateTaken().toString());
                 if(p.getDateTaken().compareTo(lowerLimit) >= 0 && p.getDateTaken().compareTo(upperLimit) <= 0){
                     result.add(p);
                 }
@@ -253,6 +268,11 @@ public class UserSystemController extends Controller implements Initializable {
 
     }
 
+    /**
+     * Open a photo view with search results
+     * @param event onclick event to open photo view with results
+     * @param result List<Photo> results to display in photo view
+     */
     private void sendResults(ActionEvent event, List<Photo> result) {
         if(result.size() == 0)
             status_ta.setText("No photos found");
@@ -261,7 +281,7 @@ public class UserSystemController extends Controller implements Initializable {
             resultAlbum.setPhotos(result);
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/photoSystem.fxml"));
-                Parent parent = (Parent) loader.load();
+                Parent parent = loader.load();
                 PhotoSystemController controller = loader.getController();
                 Scene photoScene = new Scene(parent);
                 Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -276,10 +296,9 @@ public class UserSystemController extends Controller implements Initializable {
     }
 
     /**
-     * Create album button functionality
-     * @param event
+     * Create new album button functionality
      */
-    public void createBtnAction(ActionEvent event) {
+    public void createBtnAction() {
         status_ta.setText("creating Album");
         if(create_btn.getText().equals("Create")){
             create_btn.setText("Confirm");
@@ -313,10 +332,9 @@ public class UserSystemController extends Controller implements Initializable {
     }
 
     /**
-     * Edit album button functionality
-     * @param event
+     * Edit album (name) button functionality
      */
-    public void edit_BtnAction(ActionEvent event) {
+    public void edit_BtnAction() {
         status_ta.setText("editing Album");
         String org = "";
         if(edit_btn.getText().equals("Edit")){
@@ -354,9 +372,8 @@ public class UserSystemController extends Controller implements Initializable {
 
     /**
      * Delete album button functionality
-     * @param event
      */
-    public void deleteBtnAction(ActionEvent event) {
+    public void deleteBtnAction() {
         status_ta.setText("deleting Album");
         if(delete_btn.getText().equals("Delete")){
             if(album_list.getSelectionModel().getSelectedItem() == null){
@@ -381,26 +398,24 @@ public class UserSystemController extends Controller implements Initializable {
     }
 
     /**
-     * Cancel button functionality
-     * @param event
+     * Cancel album create/edit/delete button functionality
      */
-    public void cancelBtnAction(ActionEvent event) {
+    public void cancelBtnAction() {
         status_ta.setText("action canceled");
         resetFields();
     }
 
     /**
      * Quit application button functionality
-     * @param event
      */
-    public void quitBtnAction(ActionEvent event) {
+    public void quitBtnAction() {
         updateData();
         System.exit(1);
     }
 
     /**
-     * Open album button functionality
-     * @param event
+     * Open album button functionality, opens selected album to display all photos + details
+     * @param event onclick event to open album view
      */
     public void openBtnAction(ActionEvent event) {
         Album toOpen = (Album) album_list.getSelectionModel().getSelectedItem();
@@ -425,9 +440,8 @@ public class UserSystemController extends Controller implements Initializable {
 
     /**
      * Display album details on mouse click
-     * @param mouseEvent
      */
-    public void displayDetails(MouseEvent mouseEvent) {
+    public void displayDetails() {
         Album temp = (Album) album_list.getSelectionModel().getSelectedItem();
         displayDetails(temp);
     }
@@ -452,7 +466,7 @@ public class UserSystemController extends Controller implements Initializable {
     }
 
     /**
-     * Reset text fields and buttons to initial values
+     * Reset text fields and buttons to initial values for album create/edit/delete
      */
     private void resetFields() {
         name_tf.setEditable(false);
@@ -480,8 +494,6 @@ public class UserSystemController extends Controller implements Initializable {
             ous.writeObject(userList);
             ous.close();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

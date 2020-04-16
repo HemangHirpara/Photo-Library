@@ -15,6 +15,11 @@ import javafx.stage.Stage;
  */
 public class Photos extends Application {
 
+    /**
+     * Override start to open application on login window
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         try{

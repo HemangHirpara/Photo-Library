@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -59,11 +58,11 @@ public class PhotoSystemController extends Controller implements Initializable{
     }
 
     /**
-     * Initialize application with data passed. Initial view of photo system
-     * @param userList
-     * @param user
-     * @param album
-     * @param stage
+     * Initialize application with data passed. Initial view of photo system with details populated
+     * @param userList List of users allowed on Photo system
+     * @param user current user logged in
+     * @param album album to view
+     * @param stage stage to freeze when adding new photo
      */
     public void initData(List<User> userList, User user, Album album, Stage stage) {
         this.stage = stage;
@@ -91,10 +90,9 @@ public class PhotoSystemController extends Controller implements Initializable{
     }
 
     /**
-     * Display Tag details
-     * @param actionEvent
+     * Display Tag details for photo
      */
-    public void tagSelected(ActionEvent actionEvent) {
+    public void tagSelected() {
         if(tags_cb.getSelectionModel().getSelectedItem() != null){
             tagtype_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getName());
             tagval_tf.setText(tags_cb.getSelectionModel().getSelectedItem().getValue());
@@ -107,18 +105,16 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     /**
      * Display tag type in tag type field
-     * @param actionEvent
      */
-    public void displayTagType(ActionEvent actionEvent) {
+    public void displayTagType() {
         if(tagtypes_cb.getItems().size() != 0)
             tagtype_tf.setText(tagtypes_cb.getSelectionModel().getSelectedItem());
     }
 
     /**
      * Delete tag button functionality, allow a tag to be deleted from an image
-     * @param actionEvent
      */
-    public void deleteTagBtnAction(ActionEvent actionEvent) {
+    public void deleteTagBtnAction() {
         Photo p = images_list.getSelectionModel().getSelectedItem();
         Tag t = tags_cb.getSelectionModel().getSelectedItem();
         if(p == null || t == null){
@@ -138,10 +134,9 @@ public class PhotoSystemController extends Controller implements Initializable{
     }
 
     /**
-     * add a new tag to a photo
-     * @param actionEvent
+     * Add tag button functionality, add new tag to a photo from list of tag types available
      */
-    public void addTagBtnAction(ActionEvent actionEvent) {
+    public void addTagBtnAction() {
         if(add_tag_btn.getText().equals("Add Tag")){
             cap_tf.setDisable(true);
             date_tf.setDisable(true);
@@ -160,15 +155,13 @@ public class PhotoSystemController extends Controller implements Initializable{
             if(tagtypes_cb.getItems().size() == 0){
                 status_ta.setText("No tag types, create new tag");
                 resetFields();
-                return;
             }
             else{
                 tagtypes_cb.getSelectionModel().selectFirst();
                 tagtype_tf.setText(tagtypes_cb.getSelectionModel().getSelectedItem());
             }
         }
-        else
-        {
+        else {
             if(tagtypes_cb.getSelectionModel().getSelectedItem().equals("")){
                 status_ta.setText("invalid type");
                 resetFields();
@@ -177,8 +170,7 @@ public class PhotoSystemController extends Controller implements Initializable{
                 status_ta.setText("invalid value");
                 resetFields();
             }
-            else
-            {
+            else {
                 // get photo
                 Photo p = images_list.getSelectionModel().getSelectedItem();
                 //make new tag
@@ -186,8 +178,7 @@ public class PhotoSystemController extends Controller implements Initializable{
                 // check if the tag is single val and already exists
                 if(p.getTagTypes().get(newTag.getName())){
                     for(Tag t : p.getTags()){
-                        if(t.getName().equals(newTag.getName()))
-                        {
+                        if(t.getName().equals(newTag.getName())) {
                             status_ta.setText("Can only have one");
                             resetFields();
                             return;
@@ -201,17 +192,22 @@ public class PhotoSystemController extends Controller implements Initializable{
                     updateData();
                 }
                 else
-                {
                     status_ta.setText("tag already exists");
-                }
                 tagtypes_cb.getSelectionModel().clearSelection();
                 resetFields();
             }
         }
     }
 
-    public void newTagBtnAction(ActionEvent actionEvent) {
+    /**
+     * New tag button functionality, create a new tag type, either single or multivalued
+     */
+    public void newTagBtnAction() {
         if(new_tag_btn.getText().equals("New Tag")){
+            if(images_list.getSelectionModel().getSelectedItem() == null) {
+                status_ta.setText("No image selected");
+                return;
+            }
             cap_tf.setDisable(true);
             date_tf.setDisable(true);
             albname_tf.setDisable(true);
@@ -244,12 +240,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
-
     /**
      * Add button functionality, add a new image to album, only allow jpg, jpeg, and png image formats
-     * @param actionEvent
      */
-    public void addBtnAction(ActionEvent actionEvent) {
+    public void addBtnAction() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a Photo");
         File selectedFile = fileChooser.showOpenDialog(stage);
@@ -263,23 +257,19 @@ public class PhotoSystemController extends Controller implements Initializable{
             Photo photoToAdd = new Photo(selectedFile.getName(),selectedFile);
             //check for duplicates here
             boolean res = album.addPhoto(photoToAdd);
-            if(res)
-            {
+            if(res) {
                 images_list.setItems(FXCollections.observableArrayList(album.getPhotos()));
                 updateData();
             }
-            else{
+            else
                 status_ta.setText("Duplicate Photo Found");
-            }
-
         }
     }
 
     /**
      * Remove button functionality, remove selected image from album
-     * @param event
      */
-    public void removeBtnAction(ActionEvent event) {
+    public void removeBtnAction() {
         images_list.setDisable(true);
         Photo toDelete = images_list.getSelectionModel().getSelectedItem();
         if(album.removePhoto(toDelete)){
@@ -288,18 +278,15 @@ public class PhotoSystemController extends Controller implements Initializable{
             updateData();
         }
         else
-        {
             status_ta.setText("action failed");
-        }
 
         images_list.setDisable(false);
     }
 
     /**
      * Open button functionality to open selected image in display area
-     * @param actionEvent
      */
-    public void openBtnAction(ActionEvent actionEvent) {
+    public void openBtnAction() {
         Photo toOpen = images_list.getSelectionModel().getSelectedItem();
         if(toOpen == null)
             status_ta.setText("There are no photos");
@@ -309,13 +296,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
-
-
     /**
      * Edit caption button functionality, allow changing of image caption
-     * @param actionEvent
      */
-    public void editCaptionBtnAction(ActionEvent actionEvent) {
+    public void editCaptionBtnAction() {
         if(images_list.getSelectionModel().getSelectedItem() == null){
             status_ta.setText("no image selected");
             resetFields();
@@ -347,21 +331,23 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
-    public void cancelBtnAction(ActionEvent actionEvent) {
+    /**
+     * Cancel button functionality for photo tag/caption functions
+     */
+    public void cancelBtnAction() {
         resetFields();
     }
 
     /**
      * Quit application button functionality
-     * @param event
      */
-    public void quitBtnAction(ActionEvent event) {
+    public void quitBtnAction() {
         updateData();
         System.exit(1);
     }
 
     /**
-     * Reset buttons, textfields, and listview to initial values
+     * Reset buttons, textfields, and listview to initial values, for photo tag/caption functions
      */
     private void resetFields() {
         images_list.setDisable(false);
@@ -427,8 +413,6 @@ public class PhotoSystemController extends Controller implements Initializable{
             ous.writeObject(userList);
             ous.close();
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -436,12 +420,12 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     /**
      * Back button functionality to return to previous window
-     * @param event
+     * @param event onclick event, change to previous user view
      */
     public void backBtnAction(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/userSystem.fxml"));
-            Parent parent = (Parent) loader.load();
+            Parent parent = loader.load();
             UserSystemController controller = loader.getController();
             Scene photoScene = new Scene(parent);
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -455,9 +439,8 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     /**
      * Move button functionality to move, thereby deleting, an image from current album to another album
-     * @param actionEvent
      */
-    public void moveBtnAction(ActionEvent actionEvent) {
+    public void moveBtnAction() {
         images_list.setDisable(true);
         if(move_btn.getText().equals("Move")) {
             move_btn.setText("Confirm");
@@ -491,9 +474,8 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     /**
      * Copy button functionality to copy, without removing, an image from current album to another album
-     * @param actionEvent
      */
-    public void copyBtnAction(ActionEvent actionEvent) {
+    public void copyBtnAction() {
         images_list.setDisable(true);
         if(copy_btn.getText().equals("Copy")) {
             copy_btn.setText("Confirm");
@@ -526,7 +508,7 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     /**
      * Reset fields and buttons modified by move and copy function
-     * @param b
+     * @param b boolean reset fields
      */
     public void move_cpy_reset(boolean b){
         move_lbl.setVisible(b);
@@ -538,9 +520,8 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     /**
      * Cancel move and copy actions and reset values
-     * @param actionEvent
      */
-    public void move_cpy_cancel(ActionEvent actionEvent) {
+    public void move_cpy_cancel() {
         status_ta.setText("cancelled move/copy action");
         copy_btn.setText("Copy");
         move_btn.setText("Move");
@@ -552,12 +533,12 @@ public class PhotoSystemController extends Controller implements Initializable{
 
     /**
      * Slideshow button functionality, opens a window to show slideshow
-     * @param event
+     * @param event onclick event, change to slideshow view
      */
     public void slideshow(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/slideshow.fxml"));
-            Parent parent = (Parent) loader.load();
+            Parent parent = loader.load();
             SlideshowController controller = loader.getController();
             Scene photoScene = new Scene(parent);
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -574,8 +555,10 @@ public class PhotoSystemController extends Controller implements Initializable{
         }
     }
 
-
-    public void createAlbum(ActionEvent event) {
+    /**
+     * Create new album button functionality, creates new album from search results
+     */
+    public void createAlbum() {
         if(create_alb.getText().equals("Create Album")){
             create_alb.setText("Confirm");
             cancel3_btn.setVisible(true);
@@ -584,27 +567,35 @@ public class PhotoSystemController extends Controller implements Initializable{
             if(newName.equals(""))
             {
                 status_ta.setText("No name inputted");
-                cancelNewAlbum();
+                cancel3_btn.setVisible(false);
+                create_alb.setText("Create Album");
                 return;
             }
             album.setName(newName);
-            if(user.getAlbums().contains(album))
-            {
-                status_ta.setText("invalid album name");
-                create_alb.setText("Create Album");
-                cancel3_btn.setVisible(false);
-                new_name.setText("");
-                return;
+            for (Album a : user.getAlbums()) {
+                if(a.equals(album)){
+                    status_ta.setText("duplicate album name");
+                    create_alb.setText("Create Album");
+                    cancel3_btn.setVisible(false);
+                    new_name.setText("");
+                    return;
+                }
             }
             user.getAlbums().add(album);
             photos_lbl.setText(album.getName() + " - Photos");
+            cancel3_btn.setVisible(false);
+            create_alb.setText("Create Album");
             updateData();
         }
 
     }
 
+    /**
+     * Cancel create new album function
+     */
     public void cancelNewAlbum() {
         cancel3_btn.setVisible(false);
-        status_ta.setText("cancelled");
+        status_ta.setText("cancelled create album");
+        create_alb.setText("Create Album");
     }
 }
