@@ -59,7 +59,7 @@
                </padding>
             </VBox>
             <Label layoutX="14.0" layoutY="77.0" text="Tag Types:" />
-            <ComboBox fx:id="tagtypes_cb" disable="true" layoutX="107.0" layoutY="75.0" onAction="#tagSelected" prefHeight="25.0" prefWidth="150.0" />
+            <ComboBox fx:id="tagtypes_cb" disable="true" layoutX="107.0" layoutY="75.0" onAction="#displayTagType" prefHeight="25.0" prefWidth="150.0" />
             <Button fx:id="create_alb" layoutX="8.0" layoutY="292.0" mnemonicParsing="false" onAction="#createAlbum" text="Create Album" visible="false" />
             <TextField fx:id="new_name" layoutX="108.0" layoutY="292.0" promptText="new_album_name" visible="false" />
             <Button fx:id="cancel3_btn" layoutX="278.0" layoutY="292.0" mnemonicParsing="false" onAction="#cancelNewAlbum" prefHeight="14.0" prefWidth="52.0" text="Cancel" visible="false" />
